@@ -1,0 +1,78 @@
+# Android Studio / IntelliJ IDEA files
+*.iml
+.gradle
+/local.properties
+/.idea
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/inspectionProfiles
+/.idea/codeStyles
+/.idea/codeStyles/Project.xml
+/.idea/dictionaries
+/.idea/httpRequests
+/.idea/shelf
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/.name
+
+# Build files
+**/build/
+**/captures/
+**/.externalNativeBuild/
+**/.cxx/
+**/.idea/modules/
+
+# Compiled files
+*.dex
+*.class
+*.jar
+*.apk
+*.aar
+*.ap_
+*.aab
+*.o
+*.so
+*.bin
+*.dll
+*.exe
+*.lib
+*.out
+*.pyc
+
+# Logs and temporary files
+*.log
+*.temp
+*.tmp
+*.stacktrace
+*.hprof
+
+# Keystore files
+*.jks
+*.keystore
+
+# Gradle files
+gradle-wrapper.jar
+.gradle/
+build/
+!gradle-wrapper.properties
+!gradlew
+!gradlew.bat
+
+# Secrets and API keys
+*.properties
+secrets.properties
+
+# Database Schemas
+app/schemas/
+
+# Release files
+app/release/baselineProfiles/**/*
+app/release/output-metadata.json
