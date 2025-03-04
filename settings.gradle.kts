@@ -25,3 +25,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "MrFit"
 include(":app")
 include(":test")
+include(":common:navigation")
+include(":feature:home")
+include(":feature:settings")

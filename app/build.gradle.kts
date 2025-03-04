@@ -5,4 +5,7 @@ plugins {
 
 dependencies {
     implementation(projects.test)
+    implementation(projects.common.navigation)
+    implementation(projects.feature.home)
+    implementation(projects.feature.settings)
 }

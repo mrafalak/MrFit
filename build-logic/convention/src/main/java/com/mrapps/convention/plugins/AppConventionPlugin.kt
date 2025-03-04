@@ -31,8 +31,8 @@ class AppConventionPlugin : Plugin<Project> {
                 plugins = listOf(
                     "android-application",
                     "kotlin-android",
-                    "ksp",
-                    "hilt-android-plugin"
+                    "hilt-android-plugin",
+                    "ksp"
                 )
             )
 
