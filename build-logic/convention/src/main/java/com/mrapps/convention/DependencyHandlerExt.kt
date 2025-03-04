@@ -10,6 +10,10 @@ internal fun DependencyHandler.implementation(dependency: Any) {
     this.add("implementation", dependency)
 }
 
+internal fun DependencyHandler.ksp(dependency: Any) {
+    this.add("ksp", dependency)
+}
+
 internal fun DependencyHandler.api(dependency: Any) {
     this.add("api", dependency)
 }

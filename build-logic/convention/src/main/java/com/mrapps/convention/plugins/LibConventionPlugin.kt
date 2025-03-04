@@ -2,12 +2,15 @@ package com.mrapps.convention.plugins
 
 import com.android.build.gradle.LibraryExtension
 import com.mrapps.convention.Config
+import com.mrapps.convention.Hilt
 import com.mrapps.convention.LibTesting
 import com.mrapps.convention.extensions.configureAndroidKotlin
 import com.mrapps.convention.extensions.configureLibraryBuildTypes
 import com.mrapps.convention.extensions.versionCatalog
 import com.mrapps.convention.implementation
 import com.mrapps.convention.LibTestingAndroid
+import com.mrapps.convention.extensions.applyPluginsFromCatalog
+import com.mrapps.convention.extensions.library
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
@@ -21,15 +24,23 @@ abstract class LibConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         with(project) {
-            with(pluginManager) {
-                apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
-                apply("com.google.devtools.ksp")
-            }
+            val versionCatalog = versionCatalog()
+
+            project.pluginManager.applyPluginsFromCatalog(
+                project = project,
+                catalog = versionCatalog,
+                plugins = listOf(
+                    "android-library",
+                    "kotlin-android",
+                    "ksp",
+                    "hilt-android-plugin"
+                )
+            )
 
             dependencies {
-                implementation(versionCatalog().findLibrary("androidx-core-ktx").get())
-                TestingDependencies(versionCatalog())
+                implementation(versionCatalog.library("androidx-core-ktx"))
+                Hilt(versionCatalog)
+                TestingDependencies(versionCatalog)
             }
 
             extensions.configure<LibraryExtension> {

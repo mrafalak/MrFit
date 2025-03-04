@@ -13,12 +13,14 @@ class AppComposeConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         with(project) {
+            val versionCatalog = versionCatalog()
+
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.plugin.compose")
             }
 
             dependencies {
-                Compose(versionCatalog())
+                Compose(versionCatalog)
             }
 
             val extension = extensions.getByType<ApplicationExtension>()
