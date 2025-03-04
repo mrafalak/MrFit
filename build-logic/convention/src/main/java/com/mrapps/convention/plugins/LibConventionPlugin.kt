@@ -32,8 +32,8 @@ abstract class LibConventionPlugin : Plugin<Project> {
                 plugins = listOf(
                     "android-library",
                     "kotlin-android",
-                    "ksp",
-                    "hilt-android-plugin"
+                    "hilt-android-plugin",
+                    "ksp"
                 )
             )
 
