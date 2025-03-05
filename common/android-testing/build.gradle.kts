@@ -10,8 +10,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
     implementation(projects.common.testing)
-    implementation(projects.common.data)
-    implementation(projects.common.domain)
     implementation(projects.common.main)
 }

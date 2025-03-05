@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.mrapps.mrfit.common.presentation.R
+import com.mrapps.mrfit.core.presentation.R
 
 val SpaceMono = FontFamily(
     Font(

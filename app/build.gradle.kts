@@ -4,13 +4,13 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common.testing)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+    implementation(projects.core.navigation)
+    implementation(projects.core.presentation)
     implementation(projects.common.androidTesting)
-    implementation(projects.common.data)
-    implementation(projects.common.domain)
-    implementation(projects.common.navigation)
-    implementation(projects.common.presentation)
     implementation(projects.common.main)
+    implementation(projects.common.testing)
     implementation(projects.feature.home)
     implementation(projects.feature.settings)
 }

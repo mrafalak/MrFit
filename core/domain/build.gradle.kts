@@ -5,5 +5,5 @@ plugins {
 }
 
 android {
-    namespace = "${Config.android.namespace}.common.domain"
+    namespace = "${Config.android.namespace}.core.domain"
 }
