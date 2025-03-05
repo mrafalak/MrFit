@@ -1,4 +1,4 @@
-package com.mrapps.data
+package com.mrapps.data.local.util
 
 import android.database.sqlite.*
 import com.mrapps.domain.DataError

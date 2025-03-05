@@ -1,8 +1,10 @@
 package com.mrapps.convention.plugins
 
 import com.android.build.api.dsl.ApplicationExtension
+import com.mrapps.convention.BuildTypeEnum
 import com.mrapps.convention.Config
 import com.mrapps.convention.Hilt
+import com.mrapps.convention.Room
 import com.mrapps.convention.Testing
 import com.mrapps.convention.TestingAndroid
 import com.mrapps.convention.extensions.applyPluginsFromCatalog
@@ -40,6 +42,7 @@ class AppConventionPlugin : Plugin<Project> {
                 implementation(versionCatalog.library("androidx-core-ktx"))
                 implementation(versionCatalog.library("timber-core"))
                 Hilt(versionCatalog)
+                Room(versionCatalog)
                 Testing(versionCatalog)
                 TestingAndroid(versionCatalog)
             }
@@ -50,7 +53,7 @@ class AppConventionPlugin : Plugin<Project> {
                 properties.load(keystoreFile.inputStream())
 
                 signingConfigs {
-                    create("release") {
+                    create(BuildTypeEnum.RELEASE.value) {
                         storeFile = file(properties["KEYSTORE_PATH"] as String)
                         storePassword = properties["KEYSTORE_PASSWORD"] as String
                         keyAlias = properties["KEY_ALIAS"] as String
