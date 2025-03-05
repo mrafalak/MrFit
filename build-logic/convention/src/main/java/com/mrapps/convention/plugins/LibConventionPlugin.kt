@@ -39,6 +39,7 @@ abstract class LibConventionPlugin : Plugin<Project> {
 
             dependencies {
                 implementation(versionCatalog.library("androidx-core-ktx"))
+                implementation(versionCatalog.library("timber-core"))
                 Hilt(versionCatalog)
                 TestingDependencies(versionCatalog)
             }

@@ -1,4 +1,4 @@
-package com.mrapps.mrfit.theme
+package com.mrapps.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

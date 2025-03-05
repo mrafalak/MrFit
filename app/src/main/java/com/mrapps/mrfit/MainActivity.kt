@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.mrapps.mrfit.theme.MrFitTheme
-import com.mrapps.mrfit.theme.ThemeWithSurface
+import com.mrapps.presentation.theme.MrFitTheme
+import com.mrapps.presentation.theme.ThemeWithSurface
 import com.mrapps.navigation.AppNavigation
 import com.mrapps.navigation.FeatureNavGraph
 import dagger.hilt.android.AndroidEntryPoint
