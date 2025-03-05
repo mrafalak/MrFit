@@ -1,0 +1,9 @@
+<resources>
+    <string name="error_disk_full">No disk space available. Free up memory and try again.</string>
+    <string name="error_data_inconsistency">There was a problem with the data. Please try again.</string>
+    <string name="error_unknown_local">An unknown local error occurred.</string>
+    <string name="error_file_not_found">File not found. Please check the file path.</string>
+    <string name="error_permission_denied">Permission denied. Please grant the required permissions.</string>
+    <string name="error_database_error">Database error occurred. Please restart the app.</string>
+    <string name="error_io_error">I/O error occurred. Please try again.</string>
+</resources>
