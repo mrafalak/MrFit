@@ -14,6 +14,10 @@ internal fun DependencyHandler.ksp(dependency: Any) {
     this.add("ksp", dependency)
 }
 
+internal fun DependencyHandler.kspAndroidTest(dependency: Any) {
+    this.add("kspAndroidTest", dependency)
+}
+
 internal fun DependencyHandler.api(dependency: Any) {
     this.add("api", dependency)
 }

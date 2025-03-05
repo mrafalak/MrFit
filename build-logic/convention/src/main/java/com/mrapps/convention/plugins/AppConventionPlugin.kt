@@ -4,7 +4,6 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.mrapps.convention.BuildTypeEnum
 import com.mrapps.convention.Config
 import com.mrapps.convention.Hilt
-import com.mrapps.convention.Room
 import com.mrapps.convention.Testing
 import com.mrapps.convention.TestingAndroid
 import com.mrapps.convention.extensions.applyPluginsFromCatalog
@@ -42,7 +41,6 @@ class AppConventionPlugin : Plugin<Project> {
                 implementation(versionCatalog.library("androidx-core-ktx"))
                 implementation(versionCatalog.library("timber-core"))
                 Hilt(versionCatalog)
-                Room(versionCatalog)
                 Testing(versionCatalog)
                 TestingAndroid(versionCatalog)
             }
@@ -71,7 +69,7 @@ class AppConventionPlugin : Plugin<Project> {
                     versionCode = Config.android.versionCode
                     versionName = Config.android.versionName
 
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                    testInstrumentationRunner = "com.mrapps.test.HiltTestRunner"
                     vectorDrawables {
                         useSupportLibrary = true
                     }
@@ -81,10 +79,7 @@ class AppConventionPlugin : Plugin<Project> {
 
                 packaging {
                     resources {
-                        excludes += setOf(
-                            "META-INF/LICENSE.md",
-                            "META-INF/LICENSE-notice.md",
-                        )
+                        excludes += Config.resourcesExcludes
                     }
                 }
 

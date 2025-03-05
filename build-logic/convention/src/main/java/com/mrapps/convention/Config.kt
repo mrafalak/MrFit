@@ -25,6 +25,10 @@ object Config {
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     )
     val buildConfigFlags: Map<String, Map<BuildTypeEnum, String>> = mapOf()
+    val resourcesExcludes: Set<String> = setOf(
+        "META-INF/LICENSE.md",
+        "META-INF/LICENSE-notice.md",
+    )
     const val DEFAULT_PROGUARD_FILE = "proguard-android-optimize.txt"
     const val PROGUARD_RULES_FILE = "proguard-rules.pro"
     const val KOTLIN_COMPILER_EXT_VERSION = "1.5.15"

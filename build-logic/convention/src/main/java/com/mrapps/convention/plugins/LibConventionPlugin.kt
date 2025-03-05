@@ -3,13 +3,12 @@ package com.mrapps.convention.plugins
 import com.android.build.gradle.LibraryExtension
 import com.mrapps.convention.Config
 import com.mrapps.convention.Hilt
-import com.mrapps.convention.LibTesting
+import com.mrapps.convention.Testing
 import com.mrapps.convention.extensions.configureAndroidKotlin
 import com.mrapps.convention.extensions.configureLibraryBuildTypes
 import com.mrapps.convention.extensions.versionCatalog
 import com.mrapps.convention.implementation
-import com.mrapps.convention.LibTestingAndroid
-import com.mrapps.convention.Room
+import com.mrapps.convention.TestingAndroid
 import com.mrapps.convention.extensions.applyPluginsFromCatalog
 import com.mrapps.convention.extensions.library
 import org.gradle.api.Plugin
@@ -42,7 +41,6 @@ abstract class LibConventionPlugin : Plugin<Project> {
                 implementation(versionCatalog.library("androidx-core-ktx"))
                 implementation(versionCatalog.library("timber-core"))
                 Hilt(versionCatalog)
-                Room(versionCatalog)
                 TestingDependencies(versionCatalog)
             }
 
@@ -56,10 +54,7 @@ abstract class LibConventionPlugin : Plugin<Project> {
 
                 packaging {
                     resources {
-                        excludes += setOf(
-                            "META-INF/LICENSE.md",
-                            "META-INF/LICENSE-notice.md",
-                        )
+                        excludes += Config.resourcesExcludes
                     }
                 }
             }
@@ -76,7 +71,7 @@ abstract class LibConventionPlugin : Plugin<Project> {
     }
 
     protected open fun DependencyHandler.TestingDependencies(versionCatalog: VersionCatalog) {
-        LibTesting(versionCatalog)
-        LibTestingAndroid(versionCatalog)
+        Testing(versionCatalog)
+        TestingAndroid(versionCatalog)
     }
 }
