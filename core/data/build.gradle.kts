@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "${Config.android.namespace}.common.data"
+    namespace = "${Config.android.namespace}.core.data"
 }
 
 dependencies {
     implementation(projects.common.main)
-    implementation(projects.common.domain)
+    implementation(projects.core.domain)
 }

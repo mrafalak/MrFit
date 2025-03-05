@@ -6,5 +6,5 @@ plugins {
 }
 
 android {
-    namespace = "${Config.android.namespace}.common.navigation"
+    namespace = "${Config.android.namespace}.core.navigation"
 }

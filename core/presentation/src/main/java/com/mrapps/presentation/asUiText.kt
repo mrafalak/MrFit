@@ -1,7 +1,7 @@
 package com.mrapps.presentation
 
 import com.mrapps.domain.DataError
-import com.mrapps.mrfit.common.presentation.R
+import com.mrapps.mrfit.core.presentation.R
 
 fun DataError.asUiText(): UiText {
     return when (this) {

@@ -6,9 +6,9 @@ plugins {
 }
 
 android {
-    namespace = "${Config.android.namespace}.common.presentation"
+    namespace = "${Config.android.namespace}.core.presentation"
 }
 
 dependencies {
-    implementation(projects.common.domain)
+    implementation(projects.core.domain)
 }
