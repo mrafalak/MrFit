@@ -34,3 +34,8 @@ fun DependencyHandler.Hilt(versionCatalog: VersionCatalog, api: Boolean = false)
     dependency(versionCatalog.library("hilt-android"), api)
     ksp(versionCatalog.library("hilt-android-compiler"))
 }
+
+fun DependencyHandler.Room(versionCatalog: VersionCatalog, api: Boolean = false) {
+    dependency(versionCatalog.bundle("room"), api)
+    ksp(versionCatalog.library("room-compiler"))
+}
