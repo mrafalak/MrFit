@@ -72,9 +72,6 @@ build/
 *.properties
 secrets.properties
 
-# Database Schemas
-app/schemas/
-
 # Release files
 app/release/baselineProfiles/**/*
 app/release/output-metadata.json

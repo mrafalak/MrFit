@@ -2,6 +2,7 @@ import com.mrapps.convention.Config
 
 plugins {
     alias(libs.plugins.mrfit.library)
+    alias(libs.plugins.mrfit.room)
 }
 
 android {
@@ -9,6 +10,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.common.main)
     implementation(projects.common.domain)
-    implementation(projects.common.util)
 }

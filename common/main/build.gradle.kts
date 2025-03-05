@@ -5,5 +5,5 @@ plugins {
 }
 
 android {
-    namespace = "${Config.android.namespace}.common.util"
+    namespace = "${Config.android.namespace}.common.main"
 }
