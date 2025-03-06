@@ -1,7 +1,7 @@
 package com.mrapps.mrfit
 
 import android.app.Application
-import com.mrapps.main.utli.log.TimberReleaseTree
+import com.mrapps.main.util.log.TimberReleaseTree
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

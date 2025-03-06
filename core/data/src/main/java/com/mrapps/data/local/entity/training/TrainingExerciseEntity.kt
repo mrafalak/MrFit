@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
-import com.mrapps.data.local.entity.exercise.ExerciseExecutionEntity
+import com.mrapps.data.local.entity.exercise.execution.ExerciseExecutionEntity
 
 @Entity(
     tableName = "training_exercise_entity",

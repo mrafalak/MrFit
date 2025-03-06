@@ -9,6 +9,7 @@ sealed interface DataError : Error {
         PERMISSION_DENIED,
         DATABASE_ERROR,
         IO_ERROR,
+        MAPPING_ERROR,
         UNKNOWN
     }
 }

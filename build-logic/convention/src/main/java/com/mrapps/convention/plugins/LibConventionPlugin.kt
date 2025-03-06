@@ -49,6 +49,7 @@ abstract class LibConventionPlugin : Plugin<Project> {
                 configureLibraryBuildTypes(this)
 
                 defaultConfig.targetSdk = Config.android.targetSdkVersion
+                defaultConfig.testInstrumentationRunner = Config.android.testInstrumentationRunner
 
                 buildFeatures.buildConfig = true
 

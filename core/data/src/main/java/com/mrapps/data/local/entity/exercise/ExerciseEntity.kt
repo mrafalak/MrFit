@@ -2,10 +2,11 @@ package com.mrapps.data.local.entity.exercise
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 
-@Entity(tableName = "exercise_entity")
+@Entity(tableName = "exercise_entity", indices = [Index(value = ["name"], unique = true)])
 data class ExerciseEntity(
 
     @PrimaryKey

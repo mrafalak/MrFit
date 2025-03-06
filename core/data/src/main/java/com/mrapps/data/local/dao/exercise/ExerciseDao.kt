@@ -4,26 +4,36 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
+import androidx.room.Transaction
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
-import com.mrapps.domain.model.exercise.ExerciseTypeEnum
-import kotlinx.coroutines.flow.Flow
+import com.mrapps.data.local.entity.exercise.type.StrengthExerciseEntity
+import com.mrapps.data.local.relation.ExerciseWithStrengthExercise
 
 @Dao
 interface ExerciseDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertExercise(exercise: ExerciseEntity)
 
-    @Query("SELECT * FROM exercise_entity WHERE type = :type ORDER BY name ASC")
-    fun getExercisesByType(type: ExerciseTypeEnum): Flow<List<ExerciseEntity>>
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertStrengthExercise(exercise: StrengthExerciseEntity)
 
-    @Update
-    suspend fun updateExercise(exercise: ExerciseEntity)
+    @Query("SELECT * FROM exercise_entity ORDER BY name ASC")
+    suspend fun getAllExercises(): List<ExerciseEntity>
 
     @Query("DELETE FROM exercise_entity WHERE id = :id")
     suspend fun deleteExerciseById(id: String)
 
-    @Query("DELETE FROM exercise_entity")
-    suspend fun deleteAllExercises()
+    @Transaction
+    suspend fun insertExerciseWithStrengthExercise(
+        exercise: ExerciseEntity,
+        strengthExercise: StrengthExerciseEntity
+    ) {
+        insertExercise(exercise)
+        insertStrengthExercise(strengthExercise)
+    }
+
+    @Transaction
+    @Query("SELECT * FROM exercise_entity ORDER BY name ASC")
+    suspend fun getExerciseWithStrengthExerciseList(): List<ExerciseWithStrengthExercise>
 }

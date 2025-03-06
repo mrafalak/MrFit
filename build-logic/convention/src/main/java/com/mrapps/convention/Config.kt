@@ -18,6 +18,7 @@ object Config {
         versionCode = generateVersionCode(versionNameMajor, versionNameMinor, versionNamePatch),
         versionName = "$nameApplication $versionNameMajor.$versionNameMinor.$versionNamePatch",
         namespace = namespace,
+        testInstrumentationRunner = "com.mrapps.android_testing.HiltTestRunner"
     )
     val jvm = JvmConfig(
         javaVersion = JavaVersion.VERSION_17,
@@ -42,6 +43,7 @@ data class AndroidConfig(
     val versionCode: Int,
     val versionName: String,
     val namespace: String,
+    val testInstrumentationRunner: String
 )
 
 data class JvmConfig(
