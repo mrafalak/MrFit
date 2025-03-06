@@ -10,7 +10,7 @@ fun AppNavigation(navGraphs: Set<FeatureNavGraph>) {
 
     NavHost(
         navController = navController,
-        startDestination = GraphRoutes.Home.route
+        startDestination = GraphRoutes.Exercises.route
     ) {
         navGraphs.forEach { navGraph ->
             navGraph.registerGraph(this, navController)
