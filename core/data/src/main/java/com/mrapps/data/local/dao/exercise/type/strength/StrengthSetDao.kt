@@ -5,12 +5,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.mrapps.data.local.entity.exercise.type.strength.StrengthSetEntity
+import com.mrapps.data.local.entity.exercise.execution.StrengthSetEntity
 
 @Dao
 interface StrengthSetDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertStrengthSet(set: StrengthSetEntity)
 
     @Update

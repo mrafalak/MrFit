@@ -10,9 +10,9 @@ import com.mrapps.data.local.dao.exercise.type.strength.StrengthSetDao
 import com.mrapps.data.local.dao.training.TrainingExerciseDao
 import com.mrapps.data.local.dao.training.TrainingSessionDao
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
-import com.mrapps.data.local.entity.exercise.ExerciseExecutionEntity
-import com.mrapps.data.local.entity.exercise.type.strength.StrengthExerciseEntity
-import com.mrapps.data.local.entity.exercise.type.strength.StrengthSetEntity
+import com.mrapps.data.local.entity.exercise.execution.ExerciseExecutionEntity
+import com.mrapps.data.local.entity.exercise.type.StrengthExerciseEntity
+import com.mrapps.data.local.entity.exercise.execution.StrengthSetEntity
 import com.mrapps.data.local.entity.training.TrainingExerciseEntity
 import com.mrapps.data.local.entity.training.TrainingSessionEntity
 

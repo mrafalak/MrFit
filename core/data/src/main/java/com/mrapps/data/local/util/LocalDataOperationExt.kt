@@ -6,8 +6,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import com.mrapps.domain.Result
-import com.mrapps.main.utli.log.error
-import com.mrapps.main.utli.log.warn
+import com.mrapps.main.util.log.error
+import com.mrapps.main.util.log.warn
 import java.io.FileNotFoundException
 import java.io.IOException
 
@@ -47,11 +47,38 @@ inline fun <T, reified R> safeDatabaseFlowOperation(
         .flowOn(dispatcher)
 }
 
+inline fun <T, reified R> safeMappingOperation(
+    operation: () -> T
+): Result<T, DataError.Local> {
+    return try {
+        Result.Success(operation())
+    } catch (e: Exception) {
+        logMapperError<R>(e)
+        Result.Error(DataError.Local.MAPPING_ERROR)
+    }
+}
+
 inline fun <reified R> logDatabaseError(e: Throwable) {
     try {
         Timber.error<R>("Database operation failed: ${e.message}", throwable = e)
     } catch (loggingException: Exception) {
         Timber.warn<R>("Failed to log error with Timber", loggingException)
+    }
+}
+
+inline fun <reified R> logMapperError(e: Throwable) {
+    val className = R::class.simpleName ?: "UnknownClass"
+
+    try {
+        Timber.error<R>(
+            "Object mapping failed for class: $className. Error: ${e.message}",
+            throwable = e
+        )
+    } catch (loggingException: Exception) {
+        Timber.warn<R>(
+            "Failed to log mapping error for class: $className",
+            loggingException
+        )
     }
 }
 

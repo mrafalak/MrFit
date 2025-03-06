@@ -4,12 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mrapps.data.local.entity.exercise.ExerciseExecutionEntity
+import com.mrapps.data.local.entity.exercise.execution.ExerciseExecutionEntity
 
 @Dao
 interface ExerciseExecutionDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertExecution(execution: ExerciseExecutionEntity)
 
     @Query("DELETE FROM exercise_execution_entity WHERE id = :id")

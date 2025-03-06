@@ -69,7 +69,7 @@ class AppConventionPlugin : Plugin<Project> {
                     versionCode = Config.android.versionCode
                     versionName = Config.android.versionName
 
-                    testInstrumentationRunner = "com.mrapps.test.HiltTestRunner"
+                    testInstrumentationRunner = Config.android.testInstrumentationRunner
                     vectorDrawables {
                         useSupportLibrary = true
                     }

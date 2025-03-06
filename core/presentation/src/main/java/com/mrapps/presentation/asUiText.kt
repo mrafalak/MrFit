@@ -12,5 +12,6 @@ fun DataError.asUiText(): UiText {
         DataError.Local.PERMISSION_DENIED -> UiText.StringResource(R.string.error_permission_denied)
         DataError.Local.DATABASE_ERROR -> UiText.StringResource(R.string.error_database_error)
         DataError.Local.IO_ERROR -> UiText.StringResource(R.string.error_io_error)
+        DataError.Local.MAPPING_ERROR -> UiText.StringResource(R.string.error_io_error)
     }
 }
