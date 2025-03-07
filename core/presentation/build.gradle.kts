@@ -10,5 +10,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.common.main)
     implementation(projects.core.domain)
 }

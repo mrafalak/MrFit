@@ -1,0 +1,45 @@
+<resources>
+    <!--Label-->
+    <string name="label_name">Name</string>
+    <string name="label_description">Description</string>
+    <string name="label_exercise_type">Exercise Type</string>
+    <string name="label_movement_type">Movement Type</string>
+    <string name="label_muscle_goal">Muscle Group</string>
+    <string name="label_exercise_goal">Exercise Goal</string>
+
+    <!--TopBar-->
+    <string name="top_bar_title_new_exercise">New Exercise</string>
+
+    <!--Exercise Type-->
+    <string name="exercise_type_strength">Strength</string>
+    <string name="exercise_type_endurance">Endurance</string>
+
+    <!--Movement Type-->
+    <string name="movement_type_push">Push</string>
+    <string name="movement_type_pull">Pull</string>
+    <string name="movement_type_squat">Squat</string>
+    <string name="movement_type_hinge">Hinge</string>
+    <string name="movement_type_carry">Carry</string>
+    <string name="movement_type_rotation">Rotation</string>
+    <string name="movement_type_isometric">Isometric</string>
+
+    <!--Muscle Group-->
+    <string name="muscle_group_upper_body">Upper Body</string>
+    <string name="muscle_group_lower_body">Lower Body</string>
+    <string name="muscle_group_full_body">Full Body</string>
+    <string name="muscle_group_core">Core</string>
+    <string name="muscle_group_back">Back</string>
+    <string name="muscle_group_legs">Legs</string>
+    <string name="muscle_group_arms">Arms</string>
+    <string name="muscle_group_chest">Chest</string>
+    <string name="muscle_group_shoulders">Shoulders</string>
+
+    <!--Exercise Goal-->
+    <string name="exercise_goal_strength">Strength</string>
+    <string name="exercise_goal_hypertrophy">Hypertrophy</string>
+    <string name="exercise_goal_endurance">Endurance</string>
+    <string name="exercise_goal_mobility">Mobility</string>
+    <string name="exercise_goal_stability">Stability</string>
+    <string name="exercise_goal_rehabilitation">Rehabilitation</string>
+    <string name="save">Save</string>
+</resources>
