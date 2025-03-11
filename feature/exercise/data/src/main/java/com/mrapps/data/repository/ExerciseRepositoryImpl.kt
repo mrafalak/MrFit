@@ -18,6 +18,12 @@ class ExerciseRepositoryImpl @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) : ExerciseRepository {
 
+    override suspend fun isExerciseNameTaken(name: String): Result<Boolean, DataError.Local> {
+        return safeDatabaseOperation<Boolean, ExerciseRepositoryImpl> {
+            exerciseDao.isExerciseNameTaken(name)
+        }
+    }
+
     override suspend fun addStrengthExercise(exercise: Exercise): Result<Unit, DataError.Local> {
         val mappingResult =
             safeMappingOperation<Pair<ExerciseEntity, StrengthExerciseEntity>, ExerciseRepositoryImpl> {

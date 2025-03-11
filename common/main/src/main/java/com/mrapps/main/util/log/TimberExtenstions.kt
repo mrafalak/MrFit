@@ -2,8 +2,10 @@ package com.mrapps.main.util.log
 
 import timber.log.Timber
 
+private const val DEFAULT_ERROR_MESSAGE = "Unknown error occurred"
+
 inline fun <reified T> Timber.Forest.debug(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
@@ -11,7 +13,7 @@ inline fun <reified T> Timber.Forest.debug(
 }
 
 inline fun <reified T> Timber.Forest.info(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
@@ -19,7 +21,7 @@ inline fun <reified T> Timber.Forest.info(
 }
 
 inline fun <reified T> Timber.Forest.warn(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
@@ -27,7 +29,7 @@ inline fun <reified T> Timber.Forest.warn(
 }
 
 inline fun <reified T> Timber.Forest.error(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
@@ -35,7 +37,7 @@ inline fun <reified T> Timber.Forest.error(
 }
 
 inline fun <reified T> Timber.Forest.verbose(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
@@ -43,22 +45,24 @@ inline fun <reified T> Timber.Forest.verbose(
 }
 
 inline fun <reified T> Timber.Forest.wtf(
-    message: String,
+    message: String? = null,
     vararg args: Any?,
     throwable: Throwable? = null
 ) {
     tag(T::class.java.simpleName).wtf(throwable, formatMessageWithArgs(message, *args))
 }
 
-fun formatMessageWithArgs(message: String, vararg args: Any?): String {
+fun formatMessageWithArgs(message: String?, vararg args: Any?): String {
+    val nonEmptyMessage = message.takeUnless { it.isNullOrBlank() } ?: DEFAULT_ERROR_MESSAGE
+
     return try {
-        val expectedArgsCount = "%[a-z]".toRegex().findAll(message).count()
+        val expectedArgsCount = "%[a-z]".toRegex().findAll(nonEmptyMessage).count()
         if (args.size != expectedArgsCount) {
-            "Error: Expected $expectedArgsCount arguments, but got ${args.size}. Message: '$message'"
+            "Error: Expected $expectedArgsCount arguments, but got ${args.size}. Message: '$nonEmptyMessage'"
         } else {
-            String.format(message, *args)
+            String.format(nonEmptyMessage, *args)
         }
     } catch (e: Exception) {
-        "Error formatting message: '$message'. Arguments: ${args.joinToString()}"
+        "Error formatting message: '$nonEmptyMessage'. Arguments: ${args.joinToString()}"
     }
 }

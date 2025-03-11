@@ -10,14 +10,14 @@ import com.mrapps.domain.units.SystemUnitType
 sealed class ExerciseType(val type: ExerciseTypeEnum) {
 
     data class Strength(
-        val movementType: MovementType,
-        val muscleGroup: MuscleGroup,
-        val exerciseGoal: ExerciseGoal?
+        val movementType: MovementType? = null,
+        val muscleGroup: MuscleGroup? = null,
+        val exerciseGoal: ExerciseGoal? = null
     ) : ExerciseType(ExerciseTypeEnum.STRENGTH)
 
     data class Endurance(
-        val duration: FixedUnitType.Time?,
-        val distance: SystemUnitType.Distance?,
-        val averageSpeed: SystemUnitType.Speed?
+        val duration: FixedUnitType.Time? = null,
+        val distance: SystemUnitType.Distance? = null,
+        val averageSpeed: SystemUnitType.Speed? = null
     ) : ExerciseType(ExerciseTypeEnum.ENDURANCE)
 }

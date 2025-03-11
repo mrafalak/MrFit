@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4af3abb1f1c1fee38fea61521358ab42",
+    "identityHash": "7c4f8c3179e74b473f509e6efdf38775",
     "entities": [
       {
         "tableName": "exercise_entity",
@@ -120,7 +120,7 @@
       },
       {
         "tableName": "strength_exercise_entity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`exercise_id` TEXT NOT NULL, `movement_type` TEXT NOT NULL, `muscle_group` TEXT NOT NULL, `exercise_goal` TEXT, PRIMARY KEY(`exercise_id`), FOREIGN KEY(`exercise_id`) REFERENCES `exercise_entity`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`exercise_id` TEXT NOT NULL, `movement_type` TEXT, `muscle_group` TEXT, `exercise_goal` TEXT, PRIMARY KEY(`exercise_id`), FOREIGN KEY(`exercise_id`) REFERENCES `exercise_entity`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "exerciseId",
@@ -132,13 +132,13 @@
             "fieldPath": "movementType",
             "columnName": "movement_type",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "muscleGroup",
             "columnName": "muscle_group",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "exerciseGoal",
@@ -434,7 +434,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4af3abb1f1c1fee38fea61521358ab42')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c4f8c3179e74b473f509e6efdf38775')"
     ]
   }
 }

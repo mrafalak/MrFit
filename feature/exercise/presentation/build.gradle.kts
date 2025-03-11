@@ -10,5 +10,9 @@ android {
 }
 
 dependencies {
+    implementation(projects.common.main)
+    implementation(projects.core.domain)
+    implementation(projects.core.navigation)
+    implementation(projects.core.presentation)
     implementation(projects.feature.exercise.domain)
 }

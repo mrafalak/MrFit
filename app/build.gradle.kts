@@ -11,6 +11,8 @@ dependencies {
     implementation(projects.common.androidTesting)
     implementation(projects.common.main)
     implementation(projects.common.testing)
+    implementation(projects.feature.exercise.data)
+    implementation(projects.feature.exercise.domain)
     implementation(projects.feature.exercise.presentation)
     implementation(projects.feature.home)
     implementation(projects.feature.settings)

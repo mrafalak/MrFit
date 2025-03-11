@@ -27,9 +27,9 @@ data class StrengthExerciseEntity(
     @PrimaryKey
     @ColumnInfo(name = "exercise_id") val exerciseId: String,
 
-    @ColumnInfo(name = "movement_type") val movementType: MovementType,
+    @ColumnInfo(name = "movement_type") val movementType: MovementType?,
 
-    @ColumnInfo(name = "muscle_group") val muscleGroup: MuscleGroup,
+    @ColumnInfo(name = "muscle_group") val muscleGroup: MuscleGroup?,
 
     @ColumnInfo(name = "exercise_goal") val exerciseGoal: ExerciseGoal?
 )
