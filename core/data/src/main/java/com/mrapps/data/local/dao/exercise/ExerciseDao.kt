@@ -36,4 +36,7 @@ interface ExerciseDao {
     @Transaction
     @Query("SELECT * FROM exercise_entity ORDER BY name ASC")
     suspend fun getExerciseWithStrengthExerciseList(): List<ExerciseWithStrengthExercise>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM exercise_entity WHERE name = :name)")
+    suspend fun isExerciseNameTaken(name: String): Boolean
 }

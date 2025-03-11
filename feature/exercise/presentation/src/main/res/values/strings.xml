@@ -1,8 +1,10 @@
 <resources>
     <!--Label-->
+    <string name="label_general_data">General</string>
     <string name="label_name">Name</string>
     <string name="label_description">Description</string>
     <string name="label_exercise_type">Exercise Type</string>
+    <string name="label_strength_type_data">Strength Type</string>
     <string name="label_movement_type">Movement Type</string>
     <string name="label_muscle_goal">Muscle Group</string>
     <string name="label_exercise_goal">Exercise Goal</string>
@@ -42,4 +44,12 @@
     <string name="exercise_goal_stability">Stability</string>
     <string name="exercise_goal_rehabilitation">Rehabilitation</string>
     <string name="save">Save</string>
+
+    <!--Error-->
+    <string name="error_exercise_name_empty">Name cannot be empty</string>
+    <string name="error_exercise_name_duplicated">An exercise with this name already exists</string>
+    <string name="error_exercise_name_too_long">Name is too long</string>
+    <string name="error_exercise_name_unknown">An unknown error occurred</string>
+    <string name="error_exercise_description_too_long">Description is too long</string>
+    <string name="error_exercise_option_not_selected">This option must be selected</string>
 </resources>

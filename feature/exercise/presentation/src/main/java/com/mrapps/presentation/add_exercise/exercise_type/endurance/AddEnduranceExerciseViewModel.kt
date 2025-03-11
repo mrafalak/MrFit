@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise.endurance
+package com.mrapps.presentation.add_exercise.exercise_type.endurance
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

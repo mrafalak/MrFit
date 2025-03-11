@@ -2,7 +2,6 @@ package com.mrapps.presentation.add_exercise
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -20,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,11 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
-import com.mrapps.presentation.add_exercise.endurance.AddEnduranceExerciseScreen
-import com.mrapps.presentation.add_exercise.strength.AddStrengthExerciseScreen
-import com.mrapps.presentation.add_exercise.strength.AddStrengthExerciseScreenContent
-import com.mrapps.presentation.add_exercise.strength.AddStrengthExerciseState
-import com.mrapps.presentation.component.ExposedDropdownMenuSample
+import com.mrapps.domain.validator.ExerciseValidator
+import com.mrapps.presentation.UiText
+import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeAction
+import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeScreen
+import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeViewModel
+import com.mrapps.presentation.component.CommonTextField
+import com.mrapps.presentation.component.CommonExposedDropdownMenu
 import com.mrapps.mrfit.core.presentation.R as CoreR
 import com.mrapps.mrfit.feature.exercise.presentation.R as ExerciseR
 import com.mrapps.presentation.preview.ThemePreview
@@ -49,18 +49,34 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun AddExerciseScreen(
     viewModel: AddExerciseViewModel = hiltViewModel(),
+    sharedViewModel: ExerciseTypeViewModel = hiltViewModel(),
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
+    val typeState by sharedViewModel.state.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
     val onAction: (action: AddExerciseAction) -> Unit = { action ->
         when (action) {
             AddExerciseAction.NavigateBack -> navigateBack()
+            AddExerciseAction.ValidateForm -> {
+                sharedViewModel.onAction(ExerciseTypeAction.ValidateTypeExerciseType)
+                viewModel.onAction(AddExerciseAction.ValidateForm)
+            }
+
             else -> viewModel.onAction(action)
         }
+    }
+
+    LaunchedEffect(typeState) {
+        onAction.invoke(
+            AddExerciseAction.OnTypeFormChange(
+                typeForm = typeState.form,
+                isTypeFormValidated = typeState.isTypeFormValidated
+            )
+        )
     }
 
     LaunchedEffect(Unit) {
@@ -79,23 +95,10 @@ fun AddExerciseScreen(
         snackbarState = snackbarHostState,
         onAction = onAction
     ) {
-        when (state.form.type) {
-            ExerciseTypeEnum.STRENGTH -> {
-                AddStrengthExerciseScreen(
-                    onFormChange = { typeForm ->
-                        onAction.invoke(AddExerciseAction.OnTypeFormChange(typeForm))
-                    }
-                )
-            }
-
-            ExerciseTypeEnum.ENDURANCE -> {
-                AddEnduranceExerciseScreen(
-                    onFormChange = { typeForm ->
-                        onAction.invoke(AddExerciseAction.OnTypeFormChange(typeForm))
-                    },
-                )
-            }
-        }
+        ExerciseTypeScreen(
+            type = state.form.type,
+            sharedViewModel = sharedViewModel
+        )
     }
 }
 
@@ -118,7 +121,7 @@ private fun AddExerciseContent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onAction.invoke(AddExerciseAction.SaveNewExercise)
+                    onAction.invoke(AddExerciseAction.ValidateForm)
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = Color.White
@@ -137,8 +140,14 @@ private fun AddExerciseContent(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            Text(
+                text = stringResource(ExerciseR.string.label_general_data),
+                style = MaterialTheme.typography.labelMedium
+            )
+            Spacer(Modifier.height(8.dp))
             NameTextField(
                 name = state.form.name,
+                error = state.form.nameError,
                 onNameChange = {
                     onAction.invoke(AddExerciseAction.OnNameChange(it))
                 }
@@ -146,6 +155,7 @@ private fun AddExerciseContent(
             Spacer(Modifier.height(8.dp))
             DescriptionTextField(
                 description = state.form.description,
+                error = state.form.descriptionError,
                 onDescriptionChange = {
                     onAction.invoke(AddExerciseAction.OnDescriptionChange(it))
                 }
@@ -157,7 +167,7 @@ private fun AddExerciseContent(
                     onAction.invoke(AddExerciseAction.OnTypeChange(type))
                 }
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(32.dp))
 
             exerciseTypeContent()
         }
@@ -188,14 +198,18 @@ fun AddExerciseTopAppBar(
 private fun NameTextField(
     modifier: Modifier = Modifier,
     name: String,
+    error: UiText? = null,
     onNameChange: (String) -> Unit
 ) {
-    TextField(
-        modifier = modifier.fillMaxWidth(),
+    CommonTextField(
+        modifier = modifier,
         value = name,
-        onValueChange = onNameChange,
-        label = {
-            Text(stringResource(ExerciseR.string.label_name))
+        labelResId = ExerciseR.string.label_name,
+        error = error,
+        onValueChange = { newName ->
+            if (newName.length <= ExerciseValidator.MAX_NAME_LENGTH) {
+                onNameChange(newName)
+            }
         }
     )
 }
@@ -204,15 +218,22 @@ private fun NameTextField(
 private fun DescriptionTextField(
     modifier: Modifier = Modifier,
     description: String,
+    error: UiText? = null,
     onDescriptionChange: (String) -> Unit
 ) {
-    TextField(
-        modifier = modifier.fillMaxWidth(),
+    CommonTextField(
+        modifier = modifier,
         value = description,
-        onValueChange = onDescriptionChange,
-        label = {
-            Text(stringResource(ExerciseR.string.label_description))
-        }
+        labelResId = ExerciseR.string.label_description,
+        error = error,
+        singleLine = false,
+        maxLines = 10,
+        minLines = 3,
+        onValueChange = { newDescription ->
+            if (newDescription.length <= ExerciseValidator.MAX_DESCRIPTION_LENGTH) {
+                onDescriptionChange(newDescription)
+            }
+        },
     )
 }
 
@@ -224,10 +245,10 @@ private fun ExerciseTypeDropdownMenu(
 ) {
     val context = LocalContext.current
 
-    ExposedDropdownMenuSample(
+    CommonExposedDropdownMenu(
         modifier = modifier,
         options = ExerciseTypeEnum.entries,
-        label = stringResource(ExerciseR.string.label_exercise_type),
+        labelResId = ExerciseR.string.label_exercise_type,
         selectedOption = selectedOption,
         onOptionSelected = onOptionSelected,
         optionToString = {
@@ -244,11 +265,6 @@ fun AddExerciseContentPreview(modifier: Modifier = Modifier) {
             state = AddExerciseState(),
             snackbarState = SnackbarHostState(),
             onAction = {}
-        ) {
-            AddStrengthExerciseScreenContent(
-                state = AddStrengthExerciseState(),
-                onAction = {}
-            )
-        }
+        ) {}
     }
 }

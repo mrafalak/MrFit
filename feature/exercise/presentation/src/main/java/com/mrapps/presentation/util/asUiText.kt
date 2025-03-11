@@ -1,5 +1,7 @@
 package com.mrapps.presentation.util
 
+import com.mrapps.domain.error.ExerciseError
+import com.mrapps.domain.error.StrengthExerciseError
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.model.exercise.type.strength.ExerciseGoal
 import com.mrapps.domain.model.exercise.type.strength.MovementType
@@ -48,5 +50,55 @@ fun ExerciseGoal.asUiText(): UiText {
         ExerciseGoal.MOBILITY -> UiText.StringResource(R.string.exercise_goal_mobility)
         ExerciseGoal.STABILITY -> UiText.StringResource(R.string.exercise_goal_stability)
         ExerciseGoal.REHABILITATION -> UiText.StringResource(R.string.exercise_goal_rehabilitation)
+    }
+}
+
+fun ExerciseError.asUiText(): UiText? {
+    return when (this) {
+        is ExerciseError.Name -> this.asUiText()
+        is ExerciseError.Description -> this.asUiText()
+        else -> null
+    }
+}
+
+fun ExerciseError.Name.asUiText(): UiText {
+    return when (this) {
+        ExerciseError.Name.EMPTY -> UiText.StringResource(R.string.error_exercise_name_empty)
+        ExerciseError.Name.DUPLICATED -> UiText.StringResource(R.string.error_exercise_name_duplicated)
+        ExerciseError.Name.TOO_LONG -> UiText.StringResource(R.string.error_exercise_name_too_long)
+        ExerciseError.Name.UNKNOWN -> UiText.StringResource(R.string.error_exercise_name_unknown)
+    }
+}
+
+fun ExerciseError.Description.asUiText(): UiText {
+    return when (this) {
+        ExerciseError.Description.TOO_LONG -> UiText.StringResource(R.string.error_exercise_description_too_long)
+    }
+}
+
+fun StrengthExerciseError.asUiText(): UiText? {
+    return when (this) {
+        is StrengthExerciseError.MovementType -> this.asUiText()
+        is StrengthExerciseError.MuscleGroup -> this.asUiText()
+        is StrengthExerciseError.ExerciseGoal -> this.asUiText()
+        else -> null
+    }
+}
+
+fun StrengthExerciseError.MovementType.asUiText(): UiText {
+    return when (this) {
+        StrengthExerciseError.MovementType.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
+    }
+}
+
+fun StrengthExerciseError.MuscleGroup.asUiText(): UiText {
+    return when (this) {
+        StrengthExerciseError.MuscleGroup.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
+    }
+}
+
+fun StrengthExerciseError.ExerciseGoal.asUiText(): UiText {
+    return when (this) {
+        StrengthExerciseError.ExerciseGoal.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
     }
 }

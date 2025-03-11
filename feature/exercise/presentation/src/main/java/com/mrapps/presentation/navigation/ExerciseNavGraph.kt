@@ -20,7 +20,11 @@ class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
             composable(ExerciseRoutes.AddExercise.route) {
                 AddExerciseScreen(
                     navigateBack = {
-                        navController.popBackStack()
+                        if (!navController.popBackStack()) {
+                            navController.navigate(GraphRoutes.Home.route) {
+                                popUpTo(GraphRoutes.Home.route) { inclusive = true }
+                            }
+                        }
                     }
                 )
             }
