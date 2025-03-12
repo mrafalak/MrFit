@@ -11,6 +11,7 @@
 
     <!--TopBar-->
     <string name="top_bar_title_new_exercise">New Exercise</string>
+    <string name="top_bar_title_edit_exercise">Edit Exercise</string>
     <string name="top_bar_title_exercise_list">Exercise List</string>
 
     <!--Buttons-->

@@ -6,8 +6,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mrapps.navigation.FeatureNavGraph
 import com.mrapps.navigation.GraphRoutes
+import com.mrapps.navigation.safePopBackStackOrNavigate
 import com.mrapps.presentation.manage_exercise.ManageExerciseScreen
 import com.mrapps.presentation.exercise_list.ExerciseListScreen
+import com.mrapps.presentation.navigation.ExerciseRoutes.Companion.EXERCISE_ID_KEY
 import javax.inject.Inject
 
 class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
@@ -20,6 +22,9 @@ class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
         ) {
             composable(ExerciseRoutes.ExerciseList.route) {
                 ExerciseListScreen(
+                    navigateToEditExercise = { exerciseId ->
+                        navController.navigate(ExerciseRoutes.EditExercise.withArgs(exerciseId))
+                    },
                     navigateToAddExercise = {
                         navController.navigate(ExerciseRoutes.AddExercise.route)
                     }
@@ -28,12 +33,17 @@ class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
             composable(ExerciseRoutes.AddExercise.route) {
                 ManageExerciseScreen(
                     navigateBack = {
-                        val popped = navController.popBackStack()
-                        if (!popped) {
-                            navController.navigate(ExerciseRoutes.ExerciseList.route) {
-                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                            }
-                        }
+                        navController.safePopBackStackOrNavigate(ExerciseRoutes.ExerciseList.route)
+                    }
+                )
+            }
+            composable(ExerciseRoutes.EditExercise.route) { backStackEntry ->
+                val exerciseId = backStackEntry.arguments?.getString(EXERCISE_ID_KEY)
+
+                ManageExerciseScreen(
+                    exerciseId = exerciseId,
+                    navigateBack = {
+                        navController.safePopBackStackOrNavigate(ExerciseRoutes.ExerciseList.route)
                     }
                 )
             }

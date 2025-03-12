@@ -20,12 +20,16 @@ import com.mrapps.presentation.theme.ThemeWithSurface
 @Composable
 fun ExerciseListItem(
     modifier: Modifier = Modifier,
-    exercise: Exercise
+    exercise: Exercise,
+    onClick: (exerciseId: String) -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(64.dp)
+            .height(64.dp),
+        onClick = {
+            onClick(exercise.id)
+        }
     ) {
         Column(
             modifier = Modifier
@@ -43,7 +47,8 @@ fun ExerciseListItem(
 fun ExerciseListItemLongNamePreview(modifier: Modifier = Modifier) {
     ThemeWithSurface {
         ExerciseListItem(
-            exercise = ExercisePreviewObjects.exercise.copy(name = "Wyciskanie sztangi na ławce płaskiej z nogami na ławce. Wyciskanie sztangi na ławce płaskiej z nogami na ławce.")
+            exercise = ExercisePreviewObjects.exercise.copy(name = "Wyciskanie sztangi na ławce płaskiej z nogami na ławce. Wyciskanie sztangi na ławce płaskiej z nogami na ławce."),
+            onClick = {}
         )
     }
 }
@@ -53,7 +58,8 @@ fun ExerciseListItemLongNamePreview(modifier: Modifier = Modifier) {
 fun ExerciseListItemShortNamePreview(modifier: Modifier = Modifier) {
     ThemeWithSurface {
         ExerciseListItem(
-            exercise = ExercisePreviewObjects.exercise.copy(name = "Wyciskanie sztangi")
+            exercise = ExercisePreviewObjects.exercise.copy(name = "Wyciskanie sztangi"),
+            onClick = {}
         )
     }
 }

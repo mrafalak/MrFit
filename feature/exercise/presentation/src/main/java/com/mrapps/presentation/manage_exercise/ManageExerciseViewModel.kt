@@ -2,11 +2,14 @@ package com.mrapps.presentation.manage_exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mrapps.domain.DataError
 import com.mrapps.domain.Result
 import com.mrapps.domain.error.ExerciseError
 import com.mrapps.domain.model.Exercise
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.use_case.AddNewExerciseUseCase
+import com.mrapps.domain.use_case.GetExerciseUseCase
+import com.mrapps.domain.use_case.UpdateExerciseUseCase
 import com.mrapps.domain.validator.ExerciseValidator
 import com.mrapps.main.util.uuidString
 import com.mrapps.presentation.UiText
@@ -31,7 +34,9 @@ import kotlin.reflect.KProperty1
 
 @HiltViewModel
 class ManageExerciseViewModel @Inject constructor(
+    private val getExerciseUseCase: GetExerciseUseCase,
     private val addNewExerciseUseCase: AddNewExerciseUseCase,
+    private val updateExerciseUseCase: UpdateExerciseUseCase,
     private val formValidator: ExerciseValidator,
 ) : ViewModel() {
 
@@ -47,7 +52,11 @@ class ManageExerciseViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .collectLatest { (isFormValidated, isTypeFormValidated) ->
                     if (isFormValidated && isTypeFormValidated) {
-                        addExerciseToDatabase(state.value.form)
+                        if (state.value.form.id == null) {
+                            addExerciseToDatabase(state.value.form)
+                        } else {
+                            updateExerciseInDatabase(state.value.form)
+                        }
                     }
                 }
         }
@@ -56,7 +65,14 @@ class ManageExerciseViewModel @Inject constructor(
 
     fun onAction(action: ManageExerciseAction) {
         when (action) {
-            ManageExerciseAction.ValidateForm -> validateForm(state.value.form)
+            is ManageExerciseAction.GetExerciseData -> getExerciseDataFromDatabase(action.exerciseId)
+            ManageExerciseAction.ValidateForm -> {
+                validateForm(
+                    form = state.value.form,
+                    edit = state.value.form.id != null
+                )
+            }
+
             is ManageExerciseAction.OnNameChange -> updateName(action.name)
             is ManageExerciseAction.OnDescriptionChange -> updateDescription(action.description)
             is ManageExerciseAction.OnTypeChange -> updateType(action.type)
@@ -76,14 +92,43 @@ class ManageExerciseViewModel @Inject constructor(
         }
     }
 
-    private fun validateForm(form: ExerciseForm) {
+    private fun getExerciseDataFromDatabase(exerciseId: String) {
+        viewModelScope.launch {
+            getExerciseUseCase.invoke(exerciseId).fold(
+                onSuccess = { exercise ->
+                    val updatedForm = state.value.form.copy(
+                        id = exercise.id,
+                        name = exercise.name,
+                        description = exercise.description ?: "",
+                    )
+
+                    _state.value = state.value.copy(form = updatedForm)
+
+                    sendEvent(ManageExerciseEvent.SetInitialTypeForm(exercise.type))
+                },
+                onError = { error ->
+                    _state.value = state.value.copy(error = error.asUiText())
+                }
+            )
+        }
+    }
+
+    private fun validateForm(form: ExerciseForm, edit: Boolean) {
         viewModelScope.launch {
             val validationResults = listOf(
                 async {
-                    ExerciseForm::nameError to validateField(
-                        value = form.name,
-                        validator = formValidator::validateName,
+                    val validateResult = formValidator.validateName(
+                        name = form.name,
+                        edit = edit
                     )
+
+                    ExerciseForm::nameError to when (validateResult) {
+                        is Result.Error -> {
+                            validateResult.error.asUiText()
+                        }
+
+                        is Result.Success -> null
+                    }
                 },
                 async {
                     ExerciseForm::descriptionError to validateField(
@@ -102,11 +147,10 @@ class ManageExerciseViewModel @Inject constructor(
     }
 
     private fun addExerciseToDatabase(form: ExerciseForm) {
-        val exerciseType = form.typeForm.toExerciseType()
         val exercise = Exercise(
             id = uuidString(),
             name = form.name,
-            type = exerciseType,
+            type = form.typeForm.toExerciseType(),
             description = form.description
         )
 
@@ -121,6 +165,32 @@ class ManageExerciseViewModel @Inject constructor(
                         sendEvent(ManageExerciseEvent.ShowSnackbar(message = errorMessage))
                     }
                 )
+        }
+    }
+
+    private fun updateExerciseInDatabase(form: ExerciseForm) {
+        if (form.id == null) {
+            _state.value = state.value.copy(error = DataError.Local.UNKNOWN.asUiText())
+        } else {
+            val exercise = Exercise(
+                id = form.id,
+                name = form.name,
+                description = form.description,
+                type = form.typeForm.toExerciseType()
+            )
+
+            viewModelScope.launch {
+                updateExerciseUseCase.invoke(exercise)
+                    .fold(
+                        onSuccess = {
+                            sendEvent(ManageExerciseEvent.OnSuccess)
+                        },
+                        onError = { error ->
+                            val errorMessage = error.asUiText()
+                            sendEvent(ManageExerciseEvent.ShowSnackbar(message = errorMessage))
+                        }
+                    )
+            }
         }
     }
 

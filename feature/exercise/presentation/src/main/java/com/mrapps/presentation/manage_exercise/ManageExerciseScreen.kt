@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ManageExerciseScreen(
+    exerciseId: String? = null,
     viewModel: ManageExerciseViewModel = hiltViewModel(),
     sharedViewModel: ExerciseTypeViewModel = hiltViewModel(),
     navigateBack: () -> Unit
@@ -80,17 +81,26 @@ fun ManageExerciseScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.event.collectLatest { effect ->
-            when (effect) {
+        exerciseId?.let {
+            viewModel.onAction(ManageExerciseAction.GetExerciseData(exerciseId))
+        }
+
+        viewModel.event.collectLatest { event ->
+            when (event) {
+                is ManageExerciseEvent.SetInitialTypeForm -> {
+                    sharedViewModel.onAction(ExerciseTypeAction.SetInitialTypeForm(event.type))
+                }
+
                 ManageExerciseEvent.OnSuccess -> navigateBack()
                 is ManageExerciseEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(effect.message.asString(context))
+                    snackbarHostState.showSnackbar(event.message.asString(context))
                 }
             }
         }
     }
 
     ManageExerciseContent(
+        edit = exerciseId != null,
         state = state,
         snackbarState = snackbarHostState,
         onAction = onAction
@@ -104,6 +114,7 @@ fun ManageExerciseScreen(
 
 @Composable
 private fun ManageExerciseContent(
+    edit: Boolean,
     state: ManageExerciseState,
     snackbarState: SnackbarHostState,
     onAction: (ManageExerciseAction) -> Unit,
@@ -112,6 +123,7 @@ private fun ManageExerciseContent(
     Scaffold(
         topBar = {
             ManageExerciseTopAppBar(
+                edit = edit,
                 navigateBack = {
                     onAction(ManageExerciseAction.NavigateBack)
                 }
@@ -177,11 +189,16 @@ private fun ManageExerciseContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManageExerciseTopAppBar(
+    edit: Boolean = false,
     navigateBack: () -> Unit
 ) {
     TopAppBar(
         title = {
-            Text(stringResource(ExerciseR.string.top_bar_title_new_exercise))
+            if (edit) {
+                Text(stringResource(ExerciseR.string.top_bar_title_edit_exercise))
+            } else {
+                Text(stringResource(ExerciseR.string.top_bar_title_new_exercise))
+            }
         },
         navigationIcon = {
             IconButton(onClick = navigateBack) {
@@ -262,6 +279,7 @@ private fun ExerciseTypeDropdownMenu(
 fun ManageExerciseContentPreview(modifier: Modifier = Modifier) {
     ThemeWithSurface {
         ManageExerciseContent(
+            edit = false,
             state = ManageExerciseState(),
             snackbarState = SnackbarHostState(),
             onAction = {}

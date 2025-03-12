@@ -22,6 +22,10 @@ class ExerciseTypeViewModel @Inject constructor() : ViewModel() {
 
     fun onAction(action: ExerciseTypeAction) {
         when (action) {
+            is ExerciseTypeAction.SetInitialTypeForm -> sendEvent(
+                ExerciseTypeEvent.SetInitialTypeForm(action.type)
+            )
+
             is ExerciseTypeAction.OnTypeFormChange -> updateTypeForm(
                 typeForm = action.typeForm,
                 isTypeFormValidated = action.isTypeFormValidated,

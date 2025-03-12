@@ -32,12 +32,23 @@ class ManageStrengthExerciseViewModel @Inject constructor(
 
     fun onAction(action: ManageStrengthExerciseAction) {
         when (action) {
+            is ManageStrengthExerciseAction.SetInitialTypeForm -> setInitialTypeForm(action.type)
             is ManageStrengthExerciseAction.OnMovementTypeChange -> updateMovementType(action.movementType)
             is ManageStrengthExerciseAction.OnMuscleGroupChange -> updateMuscleGroup(action.muscleGroup)
             is ManageStrengthExerciseAction.OnExerciseGoalChange -> updateExerciseGoal(action.exerciseGoal)
             ManageStrengthExerciseAction.ValidateStrengthForm -> validateForm(state.value.form)
             ManageStrengthExerciseAction.ClearError -> clearError()
         }
+    }
+
+    private fun setInitialTypeForm(type: ExerciseType.Strength) {
+        updateFormData(
+            state.value.form.data.copy(
+                movementType = type.movementType,
+                muscleGroup = type.muscleGroup,
+                exerciseGoal = type.exerciseGoal
+            )
+        )
     }
 
     private fun updateMovementType(movementType: MovementType) {

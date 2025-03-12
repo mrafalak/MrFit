@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mrapps.domain.model.exercise.type.strength.ExerciseGoal
 import com.mrapps.domain.model.exercise.type.strength.MovementType
 import com.mrapps.domain.model.exercise.type.strength.MuscleGroup
+import com.mrapps.domain.model.exercise_type.ExerciseType
 import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeAction
 import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeEvent
 import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeViewModel
@@ -41,6 +42,14 @@ fun ManageStrengthExerciseScreen(
             when (event) {
                 ExerciseTypeEvent.ValidateTypeForm -> {
                     strengthViewModel.onAction(ManageStrengthExerciseAction.ValidateStrengthForm)
+                }
+
+                is ExerciseTypeEvent.SetInitialTypeForm -> {
+                    if (event.type is ExerciseType.Strength) {
+                        strengthViewModel.onAction(
+                            ManageStrengthExerciseAction.SetInitialTypeForm(event.type)
+                        )
+                    }
                 }
             }
         }

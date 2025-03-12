@@ -4,6 +4,7 @@ import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.presentation.model.ExerciseTypeForm
 
 sealed interface ManageExerciseAction {
+    data class GetExerciseData(val exerciseId: String) : ManageExerciseAction
     data object ValidateForm : ManageExerciseAction
     data class OnNameChange(val name: String) : ManageExerciseAction
     data class OnDescriptionChange(val description: String) : ManageExerciseAction
