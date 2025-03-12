@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mrapps.domain.DataError
 import com.mrapps.domain.Result
-import com.mrapps.domain.error.ExerciseError
 import com.mrapps.domain.model.Exercise
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.use_case.AddNewExerciseUseCase
@@ -131,10 +130,16 @@ class ManageExerciseViewModel @Inject constructor(
                     }
                 },
                 async {
-                    ExerciseForm::descriptionError to validateField(
-                        value = form.description,
-                        validator = formValidator::validateDescription,
-                    )
+                    val validateResult =
+                        formValidator.validateDescription(description = form.description)
+
+                    ExerciseForm::descriptionError to when (validateResult) {
+                        is Result.Error -> {
+                            validateResult.error.asUiText()
+                        }
+
+                        is Result.Success -> null
+                    }
                 },
             ).awaitAll().toMap()
 
@@ -229,13 +234,6 @@ class ManageExerciseViewModel @Inject constructor(
 
     private fun updateForm(form: ExerciseForm) {
         _state.value = state.value.copy(form = form)
-    }
-
-    private suspend fun <T, E : ExerciseError> validateField(
-        value: T,
-        validator: suspend (T) -> Result<*, E>
-    ): UiText? {
-        return (validator(value) as? Result.Error<*, E>)?.error?.asUiText()
     }
 
     private fun clearError() {
