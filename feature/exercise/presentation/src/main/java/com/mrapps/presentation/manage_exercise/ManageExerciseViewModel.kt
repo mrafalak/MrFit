@@ -8,6 +8,7 @@ import com.mrapps.domain.model.Exercise
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.use_case.AddNewExerciseUseCase
 import com.mrapps.domain.use_case.GetExerciseUseCase
+import com.mrapps.domain.use_case.RemoveExerciseUseCase
 import com.mrapps.domain.use_case.UpdateExerciseUseCase
 import com.mrapps.domain.validator.ExerciseValidator
 import com.mrapps.main.util.uuidString
@@ -36,6 +37,7 @@ class ManageExerciseViewModel @Inject constructor(
     private val getExerciseUseCase: GetExerciseUseCase,
     private val addNewExerciseUseCase: AddNewExerciseUseCase,
     private val updateExerciseUseCase: UpdateExerciseUseCase,
+    private val removeExerciseUseCase: RemoveExerciseUseCase,
     private val formValidator: ExerciseValidator,
 ) : ViewModel() {
 
@@ -81,6 +83,7 @@ class ManageExerciseViewModel @Inject constructor(
             )
 
             ManageExerciseAction.ClearError -> clearError()
+            ManageExerciseAction.RemoveExercise -> removeExerciseInDatabase(state.value.form.id)
             else -> Unit
         }
     }
@@ -186,6 +189,25 @@ class ManageExerciseViewModel @Inject constructor(
 
             viewModelScope.launch {
                 updateExerciseUseCase.invoke(exercise)
+                    .fold(
+                        onSuccess = {
+                            sendEvent(ManageExerciseEvent.OnSuccess)
+                        },
+                        onError = { error ->
+                            val errorMessage = error.asUiText()
+                            sendEvent(ManageExerciseEvent.ShowSnackbar(message = errorMessage))
+                        }
+                    )
+            }
+        }
+    }
+
+    private fun removeExerciseInDatabase(id: String?) {
+        if (id == null) {
+            _state.value = state.value.copy(error = DataError.Local.UNKNOWN.asUiText())
+        } else {
+            viewModelScope.launch {
+                removeExerciseUseCase.invoke(id)
                     .fold(
                         onSuccess = {
                             sendEvent(ManageExerciseEvent.OnSuccess)

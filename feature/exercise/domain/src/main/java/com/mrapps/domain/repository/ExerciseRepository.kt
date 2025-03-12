@@ -12,5 +12,5 @@ interface ExerciseRepository {
     suspend fun addStrengthExercise(exercise: Exercise): Result<Unit, DataError.Local>
     suspend fun getStrengthExercises(): Result<List<Exercise>, DataError.Local>
     fun observeStrengthExercises(): Flow<Result<List<Exercise>, DataError.Local>>
-    suspend fun removeExercise(id: String): Result<Unit, DataError.Local>
+    suspend fun removeExerciseById(id: String): Result<Unit, DataError.Local>
 }

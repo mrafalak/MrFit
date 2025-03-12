@@ -6,5 +6,6 @@
     <string name="error_generic">An unexpected error occurred. Please try again later.</string>
 
     <!--Icon-->
-    <string name="navigate_back_ic">Navigate back</string>
+    <string name="ic_navigate_back">Navigate back</string>
+    <string name="ic_delete">Delete</string>
 </resources>

@@ -160,7 +160,7 @@ class ExerciseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun removeExercise(id: String): Result<Unit, DataError.Local> {
+    override suspend fun removeExerciseById(id: String): Result<Unit, DataError.Local> {
         return safeDatabaseOperation<Unit, ExerciseRepositoryImpl> {
             exerciseDao.deleteExerciseById(id)
         }

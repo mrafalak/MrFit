@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -126,6 +127,9 @@ private fun ManageExerciseContent(
                 edit = edit,
                 navigateBack = {
                     onAction(ManageExerciseAction.NavigateBack)
+                },
+                onRemove = {
+                    onAction(ManageExerciseAction.RemoveExercise)
                 }
             )
         },
@@ -190,7 +194,8 @@ private fun ManageExerciseContent(
 @Composable
 fun ManageExerciseTopAppBar(
     edit: Boolean = false,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onRemove: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -204,8 +209,18 @@ fun ManageExerciseTopAppBar(
             IconButton(onClick = navigateBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(CoreR.string.navigate_back_ic)
+                    contentDescription = stringResource(CoreR.string.ic_navigate_back)
                 )
+            }
+        },
+        actions = {
+            if (edit) {
+                IconButton(onClick = onRemove) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(CoreR.string.ic_delete)
+                    )
+                }
             }
         }
     )
@@ -279,7 +294,7 @@ private fun ExerciseTypeDropdownMenu(
 fun ManageExerciseContentPreview(modifier: Modifier = Modifier) {
     ThemeWithSurface {
         ManageExerciseContent(
-            edit = false,
+            edit = true,
             state = ManageExerciseState(),
             snackbarState = SnackbarHostState(),
             onAction = {}
