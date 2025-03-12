@@ -3,6 +3,7 @@ package com.mrapps.domain.use_case
 import com.mrapps.domain.DataError
 import com.mrapps.domain.Result
 import com.mrapps.domain.model.Exercise
+import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.repository.ExerciseRepository
 import com.mrapps.main.util.log.error
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +17,8 @@ class ObserveExerciseListUseCase @Inject constructor(
 ) {
     fun invoke(): Flow<Result<List<Exercise>, DataError.Local>> {
         val exerciseFlows = listOf(
-            repository.observeStrengthExercises(),
-            repository.observeEnduranceExercises()
+            repository.observeExercises(ExerciseTypeEnum.STRENGTH),
+            repository.observeExercises(ExerciseTypeEnum.ENDURANCE)
         )
 
         return combineMultipleFlows(exerciseFlows)

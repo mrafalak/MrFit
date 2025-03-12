@@ -3,6 +3,7 @@ package com.mrapps.domain.repository
 import com.mrapps.domain.DataError
 import com.mrapps.domain.Result
 import com.mrapps.domain.model.Exercise
+import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import kotlinx.coroutines.flow.Flow
 
 interface ExerciseRepository {
@@ -11,7 +12,6 @@ interface ExerciseRepository {
     suspend fun updateExercise(exercise: Exercise): Result<Unit, DataError.Local>
     suspend fun addExercise(exercise: Exercise): Result<Unit, DataError.Local>
     suspend fun getAllStrengthExercises(): Result<List<Exercise>, DataError.Local>
-    fun observeStrengthExercises(): Flow<Result<List<Exercise>, DataError.Local>>
-    fun observeEnduranceExercises(): Flow<Result<List<Exercise>, DataError.Local>>
+    fun observeExercises(type: ExerciseTypeEnum): Flow<Result<List<Exercise>, DataError.Local>>
     suspend fun removeExerciseById(id: String): Result<Unit, DataError.Local>
 }
