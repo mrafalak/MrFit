@@ -68,6 +68,7 @@ class ManageExerciseViewModel @Inject constructor(
         when (action) {
             is ManageExerciseAction.GetInitialData -> getInitialDataFromDatabase(action.exerciseId)
             ManageExerciseAction.ValidateForm -> {
+                trimFormTextFields()
                 validateForm(
                     form = state.value.form,
                     edit = state.value.form.id != null
@@ -129,6 +130,7 @@ class ManageExerciseViewModel @Inject constructor(
                 async {
                     val validateResult = formValidator.validateName(
                         name = form.name,
+                        editedExerciseId = form.id,
                         edit = edit
                     )
 
@@ -166,8 +168,8 @@ class ManageExerciseViewModel @Inject constructor(
         val exercise = Exercise(
             id = uuidString(),
             name = form.name,
-            type = form.typeForm.toExerciseType(),
-            description = form.description
+            description = form.description,
+            type = form.typeForm.toExerciseType()
         )
 
         viewModelScope.launch {
@@ -227,6 +229,12 @@ class ManageExerciseViewModel @Inject constructor(
                     )
             }
         }
+    }
+
+    private fun trimFormTextFields() {
+        val trimmedName = state.value.form.name.trim()
+        val trimmedDescription = state.value.form.description.trim()
+        updateForm(state.value.form.copy(name = trimmedName, description = trimmedDescription))
     }
 
     private fun updateName(name: String) {

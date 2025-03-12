@@ -30,12 +30,6 @@ class ExerciseRepositoryImpl @Inject constructor(
     private val dispatchers: DispatcherProvider
 ) : ExerciseRepository {
 
-    override suspend fun isExerciseNameTaken(name: String): Result<Boolean, DataError.Local> {
-        return safeDatabaseOperation<Boolean, ExerciseRepositoryImpl> {
-            exerciseDao.isExerciseNameTaken(name)
-        }
-    }
-
     override suspend fun getExerciseById(id: String): Result<Exercise, DataError.Local> {
         val getExerciseResult = safeDatabaseOperation<ExerciseEntity, ExerciseRepositoryImpl> {
             exerciseDao.getExerciseById(id)
@@ -44,6 +38,30 @@ class ExerciseRepositoryImpl @Inject constructor(
         return when (getExerciseResult) {
             is Result.Success -> {
                 val exerciseEntity = getExerciseResult.data
+
+                when (exerciseEntity.type) {
+                    ExerciseTypeEnum.STRENGTH -> {
+                        getStrengthExercise(exerciseEntity)
+                    }
+
+                    ExerciseTypeEnum.ENDURANCE -> {
+                        getEnduranceExercise(exerciseEntity)
+                    }
+                }
+            }
+
+            is Result.Error -> Result.Error(getExerciseResult.error)
+        }
+    }
+
+    override suspend fun getExerciseByName(name: String): Result<Exercise?, DataError.Local> {
+        val getExerciseResult = safeDatabaseOperation<ExerciseEntity?, ExerciseRepositoryImpl> {
+            exerciseDao.getExerciseByName(name)
+        }
+
+        return when (getExerciseResult) {
+            is Result.Success -> {
+                val exerciseEntity = getExerciseResult.data ?: return Result.Success(null)
 
                 when (exerciseEntity.type) {
                     ExerciseTypeEnum.STRENGTH -> {

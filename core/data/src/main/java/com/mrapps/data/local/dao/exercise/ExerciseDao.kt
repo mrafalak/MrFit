@@ -39,6 +39,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise_entity WHERE id = :id")
     suspend fun getExerciseById(id: String): ExerciseEntity
 
+    @Query("SELECT * FROM exercise_entity WHERE name = :name")
+    suspend fun getExerciseByName(name: String): ExerciseEntity?
+
     @Query("DELETE FROM exercise_entity WHERE id = :id")
     suspend fun deleteExerciseById(id: String)
 
@@ -107,7 +110,4 @@ interface ExerciseDao {
         deleteExerciseById(exercise.id)
         insertExerciseWithEnduranceExercise(exercise, enduranceExercise)
     }
-
-    @Query("SELECT EXISTS(SELECT 1 FROM exercise_entity WHERE name = :name)")
-    suspend fun isExerciseNameTaken(name: String): Boolean
 }
