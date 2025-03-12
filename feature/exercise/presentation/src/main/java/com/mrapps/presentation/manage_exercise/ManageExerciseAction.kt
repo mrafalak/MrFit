@@ -14,6 +14,7 @@ sealed interface ManageExerciseAction {
         val isTypeFormValidated: Boolean
     ) : ManageExerciseAction
 
+    data object RemoveExercise : ManageExerciseAction
     data object ClearError : ManageExerciseAction
     data object NavigateBack : ManageExerciseAction
 }

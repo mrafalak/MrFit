@@ -53,7 +53,7 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
             val savedExercises = assertResultSuccess { repository.getStrengthExercises() }
             assertThat(savedExercises.size).isEqualTo(1)
 
-            repository.removeExercise(strengthExerciseToSave.id)
+            repository.removeExerciseById(strengthExerciseToSave.id)
 
             val exercises = db.exerciseDao().getAllExercises()
             assertThat(exercises.size).isEqualTo(0)
