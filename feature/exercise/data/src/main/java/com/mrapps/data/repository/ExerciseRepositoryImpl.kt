@@ -4,6 +4,7 @@ import com.mrapps.data.local.dao.exercise.ExerciseDao
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
 import com.mrapps.data.local.entity.exercise.type.StrengthExerciseEntity
 import com.mrapps.data.local.relation.ExerciseWithStrengthExercise
+import com.mrapps.data.local.util.safeDatabaseFlowOperation
 import com.mrapps.data.local.util.safeDatabaseOperation
 import com.mrapps.data.local.util.safeMappingOperation
 import com.mrapps.data.mapper.toExercise
@@ -12,10 +13,14 @@ import com.mrapps.domain.DataError
 import com.mrapps.domain.model.Exercise
 import com.mrapps.domain.repository.ExerciseRepository
 import com.mrapps.domain.Result
+import com.mrapps.domain.util.DispatcherProvider
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ExerciseRepositoryImpl @Inject constructor(
-    private val exerciseDao: ExerciseDao
+    private val exerciseDao: ExerciseDao,
+    private val dispatchers: DispatcherProvider
 ) : ExerciseRepository {
 
     override suspend fun isExerciseNameTaken(name: String): Result<Boolean, DataError.Local> {
@@ -63,6 +68,18 @@ class ExerciseRepositoryImpl @Inject constructor(
                     }
                 }
                 return Result.Success(exerciseList)
+            }
+        }
+    }
+
+    override fun observeStrengthExercises(): Flow<Result<List<Exercise>, DataError.Local>> {
+        return safeDatabaseFlowOperation<List<Exercise>, ExerciseRepositoryImpl>(
+            dispatcher = dispatchers.io
+        ) {
+            exerciseDao.observeExerciseWithStrengthExerciseList().map { entityList ->
+                entityList.map { entity ->
+                    entity.toExercise()
+                }
             }
         }
     }

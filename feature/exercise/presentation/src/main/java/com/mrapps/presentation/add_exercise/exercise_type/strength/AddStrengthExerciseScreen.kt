@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,9 +35,6 @@ fun AddStrengthExerciseScreen(
     strengthViewModel: AddStrengthExerciseViewModel = hiltViewModel()
 ) {
     val strengthFormState by strengthViewModel.state.collectAsState()
-    val strengthFormToUpdate = remember(strengthFormState) {
-        derivedStateOf { strengthFormState }
-    }
 
     LaunchedEffect(Unit) {
         sharedViewModel.event.collectLatest { event ->
@@ -50,11 +46,11 @@ fun AddStrengthExerciseScreen(
         }
     }
 
-    LaunchedEffect(strengthFormToUpdate.value) {
+    LaunchedEffect(strengthFormState) {
         sharedViewModel.onAction(
             ExerciseTypeAction.OnTypeFormChange(
-                typeForm = strengthFormToUpdate.value.form,
-                isTypeFormValidated = strengthFormToUpdate.value.isFormValidated
+                typeForm = strengthFormState.form,
+                isTypeFormValidated = strengthFormState.isFormValidated
             )
         )
     }

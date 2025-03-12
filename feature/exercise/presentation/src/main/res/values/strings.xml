@@ -11,6 +11,11 @@
 
     <!--TopBar-->
     <string name="top_bar_title_new_exercise">New Exercise</string>
+    <string name="top_bar_title_exercise_list">Exercise List</string>
+
+    <!--Buttons-->
+    <string name="button_save">Save</string>
+    <string name="button_add">Add</string>
 
     <!--Exercise Type-->
     <string name="exercise_type_strength">Strength</string>
@@ -43,7 +48,6 @@
     <string name="exercise_goal_mobility">Mobility</string>
     <string name="exercise_goal_stability">Stability</string>
     <string name="exercise_goal_rehabilitation">Rehabilitation</string>
-    <string name="save">Save</string>
 
     <!--Error-->
     <string name="error_exercise_name_empty">Name cannot be empty</string>
