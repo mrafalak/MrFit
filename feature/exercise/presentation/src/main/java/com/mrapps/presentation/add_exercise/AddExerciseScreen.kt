@@ -128,7 +128,7 @@ private fun AddExerciseContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = stringResource(ExerciseR.string.save)
+                    contentDescription = stringResource(ExerciseR.string.button_save)
                 )
             }
         },

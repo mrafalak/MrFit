@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.mrapps.navigation.FeatureNavGraph
 import com.mrapps.navigation.GraphRoutes
 import com.mrapps.presentation.add_exercise.AddExerciseScreen
+import com.mrapps.presentation.exercise_list.ExerciseListScreen
 import javax.inject.Inject
 
 class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
@@ -15,14 +16,22 @@ class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
     override fun registerGraph(navGraphBuilder: NavGraphBuilder, navController: NavController) {
         navGraphBuilder.navigation(
             route = graphRoute.route,
-            startDestination = ExerciseRoutes.AddExercise.route
+            startDestination = ExerciseRoutes.ExerciseList.route
         ) {
+            composable(ExerciseRoutes.ExerciseList.route) {
+                ExerciseListScreen(
+                    navigateToAddExercise = {
+                        navController.navigate(ExerciseRoutes.AddExercise.route)
+                    }
+                )
+            }
             composable(ExerciseRoutes.AddExercise.route) {
                 AddExerciseScreen(
                     navigateBack = {
-                        if (!navController.popBackStack()) {
-                            navController.navigate(GraphRoutes.Home.route) {
-                                popUpTo(GraphRoutes.Home.route) { inclusive = true }
+                        val popped = navController.popBackStack()
+                        if (!popped) {
+                            navController.navigate(ExerciseRoutes.ExerciseList.route) {
+                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
                             }
                         }
                     }
