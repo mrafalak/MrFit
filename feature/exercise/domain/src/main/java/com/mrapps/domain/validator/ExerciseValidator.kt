@@ -13,10 +13,14 @@ class ExerciseValidator @Inject constructor(
         const val MAX_DESCRIPTION_LENGTH = 1000
     }
 
-    suspend fun validateName(name: String): Result<Unit, ExerciseError.Name> {
+    suspend fun validateName(
+        name: String,
+        edit: Boolean = false
+    ): Result<Unit, ExerciseError.Name> {
         return when {
             name.isBlank() -> Result.Error(ExerciseError.Name.EMPTY)
             name.length > MAX_NAME_LENGTH -> Result.Error(ExerciseError.Name.TOO_LONG)
+            edit -> Result.Success(Unit)
             else -> {
                 return when (val result = exerciseRepository.isExerciseNameTaken(name)) {
                     is Result.Error -> Result.Error(ExerciseError.Name.UNKNOWN)

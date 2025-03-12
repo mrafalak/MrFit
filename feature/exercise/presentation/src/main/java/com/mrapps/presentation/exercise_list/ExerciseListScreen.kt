@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ExerciseListScreen(
     navigateToAddExercise: () -> Unit,
+    navigateToEditExercise: (exerciseId: String) -> Unit,
     viewModel: ExerciseListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -50,15 +51,19 @@ fun ExerciseListScreen(
                 navigateToAddExercise()
             }
 
+            is ExerciseListAction.NavigateToEditExercise -> {
+                navigateToEditExercise(action.exerciseId)
+            }
+
             else -> viewModel.onAction(action)
         }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.event.collectLatest { effect ->
-            when (effect) {
+        viewModel.event.collectLatest { event ->
+            when (event) {
                 is ExerciseListEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(effect.message.asString(context))
+                    snackbarHostState.showSnackbar(event.message.asString(context))
                 }
             }
         }
@@ -104,7 +109,12 @@ fun ExerciseListContent(
                 .padding(horizontal = 16.dp)
         ) {
             items(state.exercises) { exercise ->
-                ExerciseListItem(exercise = exercise)
+                ExerciseListItem(
+                    exercise = exercise,
+                    onClick = { id ->
+                        onAction.invoke(ExerciseListAction.NavigateToEditExercise(id))
+                    }
+                )
                 Spacer(Modifier.height(8.dp))
             }
         }

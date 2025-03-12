@@ -1,10 +1,10 @@
 package com.mrapps.android_testing.di
 
-import com.mrapps.android_testing.FakeTimeProvider
 import com.mrapps.domain.di.DomainModuleDI
-import com.mrapps.main.time.TimeProvider
-import dagger.Binds
+import com.mrapps.domain.util.DispatcherProvider
+import com.mrapps.test.TestDispatchers
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 
@@ -13,8 +13,10 @@ import dagger.hilt.testing.TestInstallIn
     components = [SingletonComponent::class],
     replaces = [DomainModuleDI::class]
 )
-abstract class TestDomainModuleDI {
+object TestDomainModuleDI {
 
-    @Binds
-    abstract fun timeProvider(provider: FakeTimeProvider): TimeProvider
+    @Provides
+    fun provideTestDispatcherProvider(): DispatcherProvider {
+        return TestDispatchers()
+    }
 }

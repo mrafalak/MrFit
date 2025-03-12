@@ -1,9 +1,9 @@
-package com.mrapps.presentation.add_exercise.exercise_type.endurance
+package com.mrapps.presentation.manage_exercise.exercise_type.endurance
 
 import com.mrapps.presentation.UiText
 import com.mrapps.presentation.model.ExerciseTypeForm
 
-data class AddEnduranceExerciseState(
+data class ManageEnduranceExerciseState(
     val form: ExerciseTypeForm.Endurance = ExerciseTypeForm.Endurance(),
     val isFormValidated: Boolean = false,
     val error: UiText? = null,

@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise.exercise_type
+package com.mrapps.presentation.manage_exercise.exercise_type
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +22,10 @@ class ExerciseTypeViewModel @Inject constructor() : ViewModel() {
 
     fun onAction(action: ExerciseTypeAction) {
         when (action) {
+            is ExerciseTypeAction.SetInitialTypeForm -> sendEvent(
+                ExerciseTypeEvent.SetInitialTypeForm(action.type)
+            )
+
             is ExerciseTypeAction.OnTypeFormChange -> updateTypeForm(
                 typeForm = action.typeForm,
                 isTypeFormValidated = action.isTypeFormValidated,

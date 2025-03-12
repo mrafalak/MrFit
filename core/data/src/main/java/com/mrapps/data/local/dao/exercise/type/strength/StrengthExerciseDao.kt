@@ -9,4 +9,7 @@ interface StrengthExerciseDao {
 
     @Query("SELECT * FROM strength_exercise_entity")
     suspend fun getAllStrengthExercises(): List<StrengthExerciseEntity>
+
+    @Query("SELECT * FROM strength_exercise_entity WHERE exercise_id = :id")
+    suspend fun getStrengthExerciseById(id: String): StrengthExerciseEntity
 }

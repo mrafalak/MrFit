@@ -1,10 +1,10 @@
-package com.mrapps.presentation.add_exercise.exercise_type
+package com.mrapps.presentation.manage_exercise.exercise_type
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
-import com.mrapps.presentation.add_exercise.exercise_type.endurance.AddEnduranceExerciseScreen
-import com.mrapps.presentation.add_exercise.exercise_type.strength.AddStrengthExerciseScreen
+import com.mrapps.presentation.manage_exercise.exercise_type.endurance.ManageEnduranceExerciseScreen
+import com.mrapps.presentation.manage_exercise.exercise_type.strength.ManageStrengthExerciseScreen
 
 @Composable
 fun ExerciseTypeScreen(
@@ -14,14 +14,14 @@ fun ExerciseTypeScreen(
 ) {
     when (type) {
         ExerciseTypeEnum.STRENGTH -> {
-            AddStrengthExerciseScreen(
+            ManageStrengthExerciseScreen(
                 modifier = modifier,
                 sharedViewModel = sharedViewModel
             )
         }
 
         ExerciseTypeEnum.ENDURANCE -> {
-            AddEnduranceExerciseScreen(
+            ManageEnduranceExerciseScreen(
                 modifier = modifier,
                 sharedViewModel = sharedViewModel
             )

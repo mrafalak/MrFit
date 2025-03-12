@@ -4,6 +4,7 @@ import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.presentation.UiText
 
 data class ExerciseForm(
+    val id: String? = null,
     val name: String = "",
     val nameError: UiText? = null,
     val description: String = "",
