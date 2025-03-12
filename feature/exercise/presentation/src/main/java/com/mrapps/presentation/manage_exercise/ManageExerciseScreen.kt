@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise
+package com.mrapps.presentation.manage_exercise
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,9 +34,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
 import com.mrapps.domain.validator.ExerciseValidator
 import com.mrapps.presentation.UiText
-import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeAction
-import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeScreen
-import com.mrapps.presentation.add_exercise.exercise_type.ExerciseTypeViewModel
+import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeAction
+import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeScreen
+import com.mrapps.presentation.manage_exercise.exercise_type.ExerciseTypeViewModel
 import com.mrapps.presentation.component.CommonTextField
 import com.mrapps.presentation.component.CommonExposedDropdownMenu
 import com.mrapps.mrfit.core.presentation.R as CoreR
@@ -47,8 +47,8 @@ import com.mrapps.presentation.util.asUiText
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun AddExerciseScreen(
-    viewModel: AddExerciseViewModel = hiltViewModel(),
+fun ManageExerciseScreen(
+    viewModel: ManageExerciseViewModel = hiltViewModel(),
     sharedViewModel: ExerciseTypeViewModel = hiltViewModel(),
     navigateBack: () -> Unit
 ) {
@@ -58,12 +58,12 @@ fun AddExerciseScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val onAction: (action: AddExerciseAction) -> Unit = { action ->
+    val onAction: (action: ManageExerciseAction) -> Unit = { action ->
         when (action) {
-            AddExerciseAction.NavigateBack -> navigateBack()
-            AddExerciseAction.ValidateForm -> {
+            ManageExerciseAction.NavigateBack -> navigateBack()
+            ManageExerciseAction.ValidateForm -> {
                 sharedViewModel.onAction(ExerciseTypeAction.ValidateTypeExerciseType)
-                viewModel.onAction(AddExerciseAction.ValidateForm)
+                viewModel.onAction(ManageExerciseAction.ValidateForm)
             }
 
             else -> viewModel.onAction(action)
@@ -72,7 +72,7 @@ fun AddExerciseScreen(
 
     LaunchedEffect(typeState) {
         onAction.invoke(
-            AddExerciseAction.OnTypeFormChange(
+            ManageExerciseAction.OnTypeFormChange(
                 typeForm = typeState.form,
                 isTypeFormValidated = typeState.isTypeFormValidated
             )
@@ -82,15 +82,15 @@ fun AddExerciseScreen(
     LaunchedEffect(Unit) {
         viewModel.event.collectLatest { effect ->
             when (effect) {
-                AddExerciseEvent.OnSuccess -> navigateBack()
-                is AddExerciseEvent.ShowSnackbar -> {
+                ManageExerciseEvent.OnSuccess -> navigateBack()
+                is ManageExerciseEvent.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(effect.message.asString(context))
                 }
             }
         }
     }
 
-    AddExerciseContent(
+    ManageExerciseContent(
         state = state,
         snackbarState = snackbarHostState,
         onAction = onAction
@@ -103,17 +103,17 @@ fun AddExerciseScreen(
 }
 
 @Composable
-private fun AddExerciseContent(
-    state: AddExerciseState,
+private fun ManageExerciseContent(
+    state: ManageExerciseState,
     snackbarState: SnackbarHostState,
-    onAction: (AddExerciseAction) -> Unit,
+    onAction: (ManageExerciseAction) -> Unit,
     exerciseTypeContent: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = {
-            AddExerciseTopAppBar(
+            ManageExerciseTopAppBar(
                 navigateBack = {
-                    onAction(AddExerciseAction.NavigateBack)
+                    onAction(ManageExerciseAction.NavigateBack)
                 }
             )
         },
@@ -121,7 +121,7 @@ private fun AddExerciseContent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onAction.invoke(AddExerciseAction.ValidateForm)
+                    onAction.invoke(ManageExerciseAction.ValidateForm)
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = Color.White
@@ -149,7 +149,7 @@ private fun AddExerciseContent(
                 name = state.form.name,
                 error = state.form.nameError,
                 onNameChange = {
-                    onAction.invoke(AddExerciseAction.OnNameChange(it))
+                    onAction.invoke(ManageExerciseAction.OnNameChange(it))
                 }
             )
             Spacer(Modifier.height(8.dp))
@@ -157,14 +157,14 @@ private fun AddExerciseContent(
                 description = state.form.description,
                 error = state.form.descriptionError,
                 onDescriptionChange = {
-                    onAction.invoke(AddExerciseAction.OnDescriptionChange(it))
+                    onAction.invoke(ManageExerciseAction.OnDescriptionChange(it))
                 }
             )
             Spacer(Modifier.height(8.dp))
             ExerciseTypeDropdownMenu(
                 selectedOption = state.form.type,
                 onOptionSelected = { type ->
-                    onAction.invoke(AddExerciseAction.OnTypeChange(type))
+                    onAction.invoke(ManageExerciseAction.OnTypeChange(type))
                 }
             )
             Spacer(Modifier.height(32.dp))
@@ -176,7 +176,7 @@ private fun AddExerciseContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExerciseTopAppBar(
+fun ManageExerciseTopAppBar(
     navigateBack: () -> Unit
 ) {
     TopAppBar(
@@ -259,10 +259,10 @@ private fun ExerciseTypeDropdownMenu(
 
 @ThemePreview
 @Composable
-fun AddExerciseContentPreview(modifier: Modifier = Modifier) {
+fun ManageExerciseContentPreview(modifier: Modifier = Modifier) {
     ThemeWithSurface {
-        AddExerciseContent(
-            state = AddExerciseState(),
+        ManageExerciseContent(
+            state = ManageExerciseState(),
             snackbarState = SnackbarHostState(),
             onAction = {}
         ) {}

@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise
+package com.mrapps.presentation.manage_exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,15 +30,15 @@ import javax.inject.Inject
 import kotlin.reflect.KProperty1
 
 @HiltViewModel
-class AddExerciseViewModel @Inject constructor(
+class ManageExerciseViewModel @Inject constructor(
     private val addNewExerciseUseCase: AddNewExerciseUseCase,
     private val formValidator: ExerciseValidator,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(AddExerciseState())
-    val state: StateFlow<AddExerciseState> = _state
+    private val _state = MutableStateFlow(ManageExerciseState())
+    val state: StateFlow<ManageExerciseState> = _state
 
-    private val _event = Channel<AddExerciseEvent>(Channel.BUFFERED)
+    private val _event = Channel<ManageExerciseEvent>(Channel.BUFFERED)
     val event = _event.receiveAsFlow()
 
     init {
@@ -54,23 +54,23 @@ class AddExerciseViewModel @Inject constructor(
     }
 
 
-    fun onAction(action: AddExerciseAction) {
+    fun onAction(action: ManageExerciseAction) {
         when (action) {
-            AddExerciseAction.ValidateForm -> validateForm(state.value.form)
-            is AddExerciseAction.OnNameChange -> updateName(action.name)
-            is AddExerciseAction.OnDescriptionChange -> updateDescription(action.description)
-            is AddExerciseAction.OnTypeChange -> updateType(action.type)
-            is AddExerciseAction.OnTypeFormChange -> updateTypeForm(
+            ManageExerciseAction.ValidateForm -> validateForm(state.value.form)
+            is ManageExerciseAction.OnNameChange -> updateName(action.name)
+            is ManageExerciseAction.OnDescriptionChange -> updateDescription(action.description)
+            is ManageExerciseAction.OnTypeChange -> updateType(action.type)
+            is ManageExerciseAction.OnTypeFormChange -> updateTypeForm(
                 typeForm = action.typeForm,
                 isTypeFormValidated = action.isTypeFormValidated
             )
 
-            AddExerciseAction.ClearError -> clearError()
+            ManageExerciseAction.ClearError -> clearError()
             else -> Unit
         }
     }
 
-    private fun sendEvent(event: AddExerciseEvent) {
+    private fun sendEvent(event: ManageExerciseEvent) {
         viewModelScope.launch {
             _event.send(event)
         }
@@ -114,11 +114,11 @@ class AddExerciseViewModel @Inject constructor(
             addNewExerciseUseCase.invoke(exercise)
                 .fold(
                     onSuccess = {
-                        sendEvent(AddExerciseEvent.OnSuccess)
+                        sendEvent(ManageExerciseEvent.OnSuccess)
                     },
                     onError = { error ->
                         val errorMessage = error.asUiText()
-                        sendEvent(AddExerciseEvent.ShowSnackbar(message = errorMessage))
+                        sendEvent(ManageExerciseEvent.ShowSnackbar(message = errorMessage))
                     }
                 )
         }

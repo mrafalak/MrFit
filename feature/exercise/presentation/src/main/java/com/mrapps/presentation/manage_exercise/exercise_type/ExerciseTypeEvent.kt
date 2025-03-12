@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise.exercise_type
+package com.mrapps.presentation.manage_exercise.exercise_type
 
 
 sealed interface ExerciseTypeEvent {

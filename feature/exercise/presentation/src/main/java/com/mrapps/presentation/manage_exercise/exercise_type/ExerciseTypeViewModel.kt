@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise.exercise_type
+package com.mrapps.presentation.manage_exercise.exercise_type
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

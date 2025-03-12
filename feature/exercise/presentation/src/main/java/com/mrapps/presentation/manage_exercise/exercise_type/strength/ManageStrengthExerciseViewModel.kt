@@ -1,4 +1,4 @@
-package com.mrapps.presentation.add_exercise.exercise_type.strength
+package com.mrapps.presentation.manage_exercise.exercise_type.strength
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,20 +23,20 @@ import javax.inject.Inject
 import kotlin.reflect.KProperty1
 
 @HiltViewModel
-class AddStrengthExerciseViewModel @Inject constructor(
+class ManageStrengthExerciseViewModel @Inject constructor(
     val formValidator: StrengthExerciseValidator
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(AddStrengthExerciseState())
-    val state: StateFlow<AddStrengthExerciseState> = _state
+    private val _state = MutableStateFlow(ManageStrengthExerciseState())
+    val state: StateFlow<ManageStrengthExerciseState> = _state
 
-    fun onAction(action: AddStrengthExerciseAction) {
+    fun onAction(action: ManageStrengthExerciseAction) {
         when (action) {
-            is AddStrengthExerciseAction.OnMovementTypeChange -> updateMovementType(action.movementType)
-            is AddStrengthExerciseAction.OnMuscleGroupChange -> updateMuscleGroup(action.muscleGroup)
-            is AddStrengthExerciseAction.OnExerciseGoalChange -> updateExerciseGoal(action.exerciseGoal)
-            AddStrengthExerciseAction.ValidateStrengthForm -> validateForm(state.value.form)
-            AddStrengthExerciseAction.ClearError -> clearError()
+            is ManageStrengthExerciseAction.OnMovementTypeChange -> updateMovementType(action.movementType)
+            is ManageStrengthExerciseAction.OnMuscleGroupChange -> updateMuscleGroup(action.muscleGroup)
+            is ManageStrengthExerciseAction.OnExerciseGoalChange -> updateExerciseGoal(action.exerciseGoal)
+            ManageStrengthExerciseAction.ValidateStrengthForm -> validateForm(state.value.form)
+            ManageStrengthExerciseAction.ClearError -> clearError()
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mrapps.navigation.FeatureNavGraph
 import com.mrapps.navigation.GraphRoutes
-import com.mrapps.presentation.add_exercise.AddExerciseScreen
+import com.mrapps.presentation.manage_exercise.ManageExerciseScreen
 import com.mrapps.presentation.exercise_list.ExerciseListScreen
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class ExerciseNavGraph @Inject constructor() : FeatureNavGraph {
                 )
             }
             composable(ExerciseRoutes.AddExercise.route) {
-                AddExerciseScreen(
+                ManageExerciseScreen(
                     navigateBack = {
                         val popped = navController.popBackStack()
                         if (!popped) {
