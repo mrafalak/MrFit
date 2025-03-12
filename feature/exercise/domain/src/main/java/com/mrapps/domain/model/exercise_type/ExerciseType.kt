@@ -1,11 +1,11 @@
 package com.mrapps.domain.model.exercise_type
 
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
+import com.mrapps.domain.model.exercise.type.endurance.EnduranceActivityType
 import com.mrapps.domain.model.exercise.type.strength.ExerciseGoal
 import com.mrapps.domain.model.exercise.type.strength.MovementType
 import com.mrapps.domain.model.exercise.type.strength.MuscleGroup
-import com.mrapps.domain.units.FixedUnitType
-import com.mrapps.domain.units.SystemUnitType
+import com.mrapps.domain.units.MeasurementUnit
 
 sealed class ExerciseType(val type: ExerciseTypeEnum) {
 
@@ -16,8 +16,7 @@ sealed class ExerciseType(val type: ExerciseTypeEnum) {
     ) : ExerciseType(ExerciseTypeEnum.STRENGTH)
 
     data class Endurance(
-        val duration: FixedUnitType.Time? = null,
-        val distance: SystemUnitType.Distance? = null,
-        val averageSpeed: SystemUnitType.Speed? = null
+        val activityType: EnduranceActivityType? = null,
+        val durationUnit: MeasurementUnit.Time? = null
     ) : ExerciseType(ExerciseTypeEnum.ENDURANCE)
 }

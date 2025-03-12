@@ -9,11 +9,11 @@ sealed class FixedUnitType(val value: Measurement) : UnitType {
     )
 
     data class Repetition(val count: Int) : FixedUnitType(
-        value = Measurement(count.toDouble(), MeasurementUnit.REPETITION)
+        value = Measurement(count.toDouble(), MeasurementUnit.Countable.Repetition)
     )
 
     data class Set(val count: Int) : FixedUnitType(
-        value = Measurement(count.toDouble(), MeasurementUnit.SET)
+        value = Measurement(count.toDouble(), MeasurementUnit.Countable.Set)
     )
 }
 
@@ -23,18 +23,18 @@ sealed class SystemUnitType(
 ) : UnitType {
 
     data class Weight(val kg: Double, val lb: Double) : SystemUnitType(
-        metric = Measurement(kg, MeasurementUnit.KILOGRAM),
-        imperial = Measurement(lb, MeasurementUnit.POUND),
+        metric = Measurement(kg, MeasurementUnit.Weight.Kilogram),
+        imperial = Measurement(lb, MeasurementUnit.Weight.Pound),
     )
 
     data class Distance(val meter: Double, val foot: Double) : SystemUnitType(
-        metric = Measurement(meter, MeasurementUnit.METER),
-        imperial = Measurement(foot, MeasurementUnit.FOOT),
+        metric = Measurement(meter, MeasurementUnit.Distance.Meter),
+        imperial = Measurement(foot, MeasurementUnit.Distance.Foot),
     )
 
     data class Speed(val speedKMH: Double, val speedMPH: Double) : SystemUnitType(
-        metric = Measurement(speedKMH, MeasurementUnit.SPEED_KMH),
-        imperial = Measurement(speedMPH, MeasurementUnit.SPEED_MPH),
+        metric = Measurement(speedKMH, MeasurementUnit.Speed.KmPerHour),
+        imperial = Measurement(speedMPH, MeasurementUnit.Speed.MiPerHour),
     )
 
     fun getMeasurement(useMetric: Boolean): Measurement {

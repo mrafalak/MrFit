@@ -1,8 +1,10 @@
 package com.mrapps.presentation.util
 
+import com.mrapps.domain.error.EnduranceExerciseError
 import com.mrapps.domain.error.ExerciseError
 import com.mrapps.domain.error.StrengthExerciseError
 import com.mrapps.domain.model.exercise.ExerciseTypeEnum
+import com.mrapps.domain.model.exercise.type.endurance.EnduranceActivityType
 import com.mrapps.domain.model.exercise.type.strength.ExerciseGoal
 import com.mrapps.domain.model.exercise.type.strength.MovementType
 import com.mrapps.domain.model.exercise.type.strength.MuscleGroup
@@ -53,11 +55,11 @@ fun ExerciseGoal.asUiText(): UiText {
     }
 }
 
-fun ExerciseError.asUiText(): UiText? {
+fun EnduranceActivityType.asUiText(): UiText {
     return when (this) {
-        is ExerciseError.Name -> this.asUiText()
-        is ExerciseError.Description -> this.asUiText()
-        else -> null
+        EnduranceActivityType.RUNNING -> UiText.StringResource(R.string.exercise_activity_type_running)
+        EnduranceActivityType.CYCLING -> UiText.StringResource(R.string.exercise_activity_type_cycling)
+        EnduranceActivityType.SWIMMING -> UiText.StringResource(R.string.exercise_activity_type_swimming)
     }
 }
 
@@ -100,5 +102,25 @@ fun StrengthExerciseError.MuscleGroup.asUiText(): UiText {
 fun StrengthExerciseError.ExerciseGoal.asUiText(): UiText {
     return when (this) {
         StrengthExerciseError.ExerciseGoal.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
+    }
+}
+
+fun EnduranceExerciseError.asUiText(): UiText? {
+    return when (this) {
+        is EnduranceExerciseError.ActivityType -> this.asUiText()
+        is EnduranceExerciseError.DurationUnit -> this.asUiText()
+        else -> null
+    }
+}
+
+fun EnduranceExerciseError.ActivityType.asUiText(): UiText {
+    return when (this) {
+        EnduranceExerciseError.ActivityType.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
+    }
+}
+
+fun EnduranceExerciseError.DurationUnit.asUiText(): UiText {
+    return when (this) {
+        EnduranceExerciseError.DurationUnit.NOT_SELECTED -> UiText.StringResource(R.string.error_exercise_option_not_selected)
     }
 }

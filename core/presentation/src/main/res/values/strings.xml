@@ -8,4 +8,10 @@
     <!--Icon-->
     <string name="ic_navigate_back">Navigate back</string>
     <string name="ic_delete">Delete</string>
+
+    <!--Time Unit-->
+    <string name="time_unit_millisecond">Millisecond</string>
+    <string name="time_unit_second">Second</string>
+    <string name="time_unit_minute">Minute</string>
+    <string name="time_unit_hour">Hour</string>
 </resources>

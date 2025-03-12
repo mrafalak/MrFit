@@ -24,7 +24,7 @@ import kotlin.reflect.KProperty1
 
 @HiltViewModel
 class ManageStrengthExerciseViewModel @Inject constructor(
-    val formValidator: StrengthExerciseValidator
+    private val formValidator: StrengthExerciseValidator
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ManageStrengthExerciseState())

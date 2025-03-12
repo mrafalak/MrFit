@@ -1,5 +1,6 @@
 package com.mrapps.domain.di
 
+import com.mrapps.domain.handler.EnduranceExerciseHandler
 import com.mrapps.domain.handler.ExerciseHandler
 import com.mrapps.domain.handler.StrengthExerciseHandler
 import dagger.Binds
@@ -15,4 +16,8 @@ abstract class ExerciseHandlerModule {
     @Binds
     @IntoSet
     abstract fun bindStrengthExerciseHandler(handler: StrengthExerciseHandler): ExerciseHandler
+
+    @Binds
+    @IntoSet
+    abstract fun bindEnduranceExerciseHandler(handler: EnduranceExerciseHandler): ExerciseHandler
 }

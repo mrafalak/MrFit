@@ -10,7 +10,9 @@ interface ExerciseRepository {
     suspend fun getExerciseById(id: String): Result<Exercise, DataError.Local>
     suspend fun updateExercise(exercise: Exercise): Result<Unit, DataError.Local>
     suspend fun addStrengthExercise(exercise: Exercise): Result<Unit, DataError.Local>
-    suspend fun getStrengthExercises(): Result<List<Exercise>, DataError.Local>
+    suspend fun addEnduranceExercise(exercise: Exercise): Result<Unit, DataError.Local>
+    suspend fun getAllStrengthExercises(): Result<List<Exercise>, DataError.Local>
     fun observeStrengthExercises(): Flow<Result<List<Exercise>, DataError.Local>>
+    fun observeEnduranceExercises(): Flow<Result<List<Exercise>, DataError.Local>>
     suspend fun removeExerciseById(id: String): Result<Unit, DataError.Local>
 }

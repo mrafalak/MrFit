@@ -5,9 +5,12 @@
     <string name="label_description">Description</string>
     <string name="label_exercise_type">Exercise Type</string>
     <string name="label_strength_type_data">Strength Type</string>
+    <string name="label_endurance_type_data">Endurance Type</string>
     <string name="label_movement_type">Movement Type</string>
     <string name="label_muscle_goal">Muscle Group</string>
     <string name="label_exercise_goal">Exercise Goal</string>
+    <string name="label_activity_type">Activity Type</string>
+    <string name="label_duration_unit">Duration Unit</string>
 
     <!--TopBar-->
     <string name="top_bar_title_new_exercise">New Exercise</string>
@@ -49,6 +52,11 @@
     <string name="exercise_goal_mobility">Mobility</string>
     <string name="exercise_goal_stability">Stability</string>
     <string name="exercise_goal_rehabilitation">Rehabilitation</string>
+
+    <!--Activity Goal-->
+    <string name="exercise_activity_type_running">Running</string>
+    <string name="exercise_activity_type_cycling">Cycling</string>
+    <string name="exercise_activity_type_swimming">Swimming</string>
 
     <!--Error-->
     <string name="error_exercise_name_empty">Name cannot be empty</string>

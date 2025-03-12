@@ -23,7 +23,7 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
     fun givenValidStrengthExercise_whenSavedToDatabase_thenShouldBeRetrievable() = runTest {
         repository.addStrengthExercise(exercise())
 
-        val savedExercises = assertResultSuccess { repository.getStrengthExercises() }
+        val savedExercises = assertResultSuccess { repository.getAllStrengthExercises() }
         assertThat(savedExercises.size).isEqualTo(1)
     }
 
@@ -31,16 +31,15 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
     fun givenInvalidStrengthExercise_whenSavedToDatabase_thenShouldReturnError() = runTest {
         val exerciseToSave = exercise().copy(
             type = ExerciseType.Endurance(
-                duration = null,
-                distance = null,
-                averageSpeed = null
+                activityType = null,
+                durationUnit = null,
             )
         )
         assertResultError(DataError.Local.MAPPING_ERROR) {
             repository.addStrengthExercise(exerciseToSave)
         }
 
-        val savedExercises = assertResultSuccess { repository.getStrengthExercises() }
+        val savedExercises = assertResultSuccess { repository.getAllStrengthExercises() }
         assertThat(savedExercises.size).isEqualTo(0)
     }
 
@@ -50,7 +49,7 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
             val strengthExerciseToSave = exercise()
             repository.addStrengthExercise(strengthExerciseToSave)
 
-            val savedExercises = assertResultSuccess { repository.getStrengthExercises() }
+            val savedExercises = assertResultSuccess { repository.getAllStrengthExercises() }
             assertThat(savedExercises.size).isEqualTo(1)
 
             repository.removeExerciseById(strengthExerciseToSave.id)
@@ -74,14 +73,14 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
         )
         repository.addStrengthExercise(strengthExerciseToSave1)
 
-        val savedExercises1 = assertResultSuccess { repository.getStrengthExercises() }
+        val savedExercises1 = assertResultSuccess { repository.getAllStrengthExercises() }
         assertThat(savedExercises1.size).isEqualTo(1)
 
         assertResultError(DataError.Local.DATA_INCONSISTENCY) {
             repository.addStrengthExercise(strengthExerciseToSave2)
         }
 
-        val savedExercises2 = assertResultSuccess { repository.getStrengthExercises() }
+        val savedExercises2 = assertResultSuccess { repository.getAllStrengthExercises() }
         assertThat(savedExercises2.size).isEqualTo(1)
     }
 }

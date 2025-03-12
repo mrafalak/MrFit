@@ -83,7 +83,7 @@ fun ManageExerciseScreen(
 
     LaunchedEffect(Unit) {
         exerciseId?.let {
-            viewModel.onAction(ManageExerciseAction.GetExerciseData(exerciseId))
+            viewModel.onAction(ManageExerciseAction.GetInitialData(exerciseId))
         }
 
         viewModel.event.collectLatest { event ->
