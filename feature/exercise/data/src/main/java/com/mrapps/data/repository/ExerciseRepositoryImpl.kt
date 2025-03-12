@@ -11,9 +11,8 @@ import com.mrapps.data.local.relation.ExerciseWithType
 import com.mrapps.data.local.util.safeDatabaseFlowOperation
 import com.mrapps.data.local.util.safeDatabaseOperation
 import com.mrapps.data.local.util.safeMappingOperation
+import com.mrapps.data.manager.exercise_add.ExerciseAddManager
 import com.mrapps.data.mapper.toExercise
-import com.mrapps.data.mapper.toExerciseWithEnduranceEntities
-import com.mrapps.data.mapper.toExerciseWithStrengthEntities
 import com.mrapps.domain.DataError
 import com.mrapps.domain.model.Exercise
 import com.mrapps.domain.repository.ExerciseRepository
@@ -28,6 +27,7 @@ class ExerciseRepositoryImpl @Inject constructor(
     private val exerciseDao: ExerciseDao,
     private val strengthExerciseDao: StrengthExerciseDao,
     private val enduranceExerciseDao: EnduranceExerciseDao,
+    private val exerciseAddManager: ExerciseAddManager,
     private val exerciseUpdateManager: ExerciseUpdateManager,
     private val dispatchers: DispatcherProvider
 ) : ExerciseRepository {
@@ -80,6 +80,10 @@ class ExerciseRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun addExercise(exercise: Exercise): Result<Unit, DataError.Local> {
+        return exerciseAddManager.addExercise(exercise)
+    }
+
     override suspend fun updateExercise(exercise: Exercise): Result<Unit, DataError.Local> {
         val getSavedExerciseResult = safeDatabaseOperation<ExerciseEntity, ExerciseRepositoryImpl> {
             exerciseDao.getExerciseById(exercise.id)
@@ -87,7 +91,7 @@ class ExerciseRepositoryImpl @Inject constructor(
 
         return when (getSavedExerciseResult) {
             is Result.Success -> {
-                updateExerciseWithType(
+                exerciseUpdateManager.updateExercise(
                     saved = getSavedExerciseResult.data,
                     new = exercise
                 )
@@ -95,13 +99,6 @@ class ExerciseRepositoryImpl @Inject constructor(
 
             is Result.Error -> Result.Error(getSavedExerciseResult.error)
         }
-    }
-
-    private suspend fun updateExerciseWithType(
-        saved: ExerciseEntity,
-        new: Exercise
-    ): Result<Unit, DataError.Local> {
-        return exerciseUpdateManager.updateExercise(saved, new)
     }
 
     private suspend fun getStrengthExercise(exerciseEntity: ExerciseEntity): Result<Exercise, DataError.Local> {
@@ -145,44 +142,6 @@ class ExerciseRepositoryImpl @Inject constructor(
             is Result.Error -> {
                 Result.Error(getEnduranceExerciseResult.error)
             }
-        }
-    }
-
-    override suspend fun addStrengthExercise(exercise: Exercise): Result<Unit, DataError.Local> {
-        val mappingResult =
-            safeMappingOperation<Pair<ExerciseEntity, StrengthExerciseEntity>, ExerciseRepositoryImpl> {
-                exercise.toExerciseWithStrengthEntities()
-            }
-
-        val (exerciseEntity, strengthEntity) = when (mappingResult) {
-            is Result.Success -> mappingResult.data
-            is Result.Error -> return Result.Error(mappingResult.error)
-        }
-
-        return safeDatabaseOperation<Unit, ExerciseRepositoryImpl> {
-            exerciseDao.insertExerciseWithStrengthExercise(
-                exercise = exerciseEntity,
-                strengthExercise = strengthEntity
-            )
-        }
-    }
-
-    override suspend fun addEnduranceExercise(exercise: Exercise): Result<Unit, DataError.Local> {
-        val mappingResult =
-            safeMappingOperation<Pair<ExerciseEntity, EnduranceExerciseEntity>, ExerciseRepositoryImpl> {
-                exercise.toExerciseWithEnduranceEntities()
-            }
-
-        val (exerciseEntity, enduranceEntity) = when (mappingResult) {
-            is Result.Success -> mappingResult.data
-            is Result.Error -> return Result.Error(mappingResult.error)
-        }
-
-        return safeDatabaseOperation<Unit, ExerciseRepositoryImpl> {
-            exerciseDao.insertExerciseWithEnduranceExercise(
-                exercise = exerciseEntity,
-                enduranceExercise = enduranceEntity
-            )
         }
     }
 
