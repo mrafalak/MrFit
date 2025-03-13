@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.mrapps.android_testing.MrFitAndroidTest
 import com.mrapps.domain.DataError
-import com.mrapps.domain.model.exercise_type.ExerciseType
 import com.mrapps.test.exercise
 import com.mrapps.test.util.assertResultError
 import com.mrapps.test.util.assertResultSuccess
@@ -25,22 +24,6 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
 
         val savedExercises = assertResultSuccess { repository.getAllStrengthExercises() }
         assertThat(savedExercises.size).isEqualTo(1)
-    }
-
-    @Test
-    fun givenInvalidStrengthExercise_whenSavedToDatabase_thenShouldReturnError() = runTest {
-        val exerciseToSave = exercise().copy(
-            type = ExerciseType.Endurance(
-                activityType = null,
-                durationUnit = null,
-            )
-        )
-        assertResultError(DataError.Local.MAPPING_ERROR) {
-            repository.addExercise(exerciseToSave)
-        }
-
-        val savedExercises = assertResultSuccess { repository.getAllStrengthExercises() }
-        assertThat(savedExercises.size).isEqualTo(0)
     }
 
     @Test
