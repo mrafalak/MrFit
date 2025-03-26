@@ -92,4 +92,38 @@ class ExerciseRepositoryImplTest : MrFitAndroidTest() {
             assertResultSuccess { repository.getExercisesByType(ExerciseTypeEnum.STRENGTH) }
         assertThat(savedExercises2.size).isEqualTo(1)
     }
+
+    @Test
+    fun givenStrengthExercise_whenUpdatedToEndurance_thenReplacesStrengthWithEndurance() = runTest {
+        val name = "BenchPress"
+        val initialStrengthExercise = exercise().copy(
+            id = "1",
+            name = name
+        )
+        repository.addExercise(initialStrengthExercise)
+        val savedStrengthExercises1 =
+            assertResultSuccess { repository.getExercisesByType(ExerciseTypeEnum.STRENGTH) }
+        val savedEnduranceExercises1 =
+            assertResultSuccess { repository.getExercisesByType(ExerciseTypeEnum.ENDURANCE) }
+        assertThat(savedStrengthExercises1.size).isEqualTo(1)
+        assertThat(savedEnduranceExercises1.size).isEqualTo(0)
+        assertThat(savedStrengthExercises1[0].id).isEqualTo(initialStrengthExercise.id)
+
+        repository.updateExercise(
+            initialStrengthExercise.copy(
+                type = ExerciseType.Endurance(
+                    activityType = EnduranceActivityType.RUNNING,
+                    durationUnit = MeasurementUnit.Time.Hour
+                )
+            )
+        )
+
+        val savedStrengthExercises2 =
+            assertResultSuccess { repository.getExercisesByType(ExerciseTypeEnum.STRENGTH) }
+        val savedEnduranceExercises2 =
+            assertResultSuccess { repository.getExercisesByType(ExerciseTypeEnum.ENDURANCE) }
+        assertThat(savedStrengthExercises2.size).isEqualTo(0)
+        assertThat(savedEnduranceExercises2.size).isEqualTo(1)
+        assertThat(savedEnduranceExercises2[0].id).isEqualTo(initialStrengthExercise.id)
+    }
 }
