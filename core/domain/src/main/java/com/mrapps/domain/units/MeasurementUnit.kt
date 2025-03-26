@@ -24,10 +24,12 @@ sealed class MeasurementUnit(val id: Int, val unit: String) {
         data object Hour : Time(23, "h")
 
         companion object {
-            val entries = listOf(Millisecond, Second, Minute, Hour)
+            val entries: List<Time> by lazy {
+                listOf(Millisecond, Second, Minute, Hour)
+            }
 
             fun fromId(id: Int?): Time? {
-                return entries.find { it.id == id }
+                return entries.firstOrNull { it.id == id }
             }
         }
     }

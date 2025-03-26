@@ -68,6 +68,10 @@ interface ExerciseDao {
     suspend fun getAllStrengthExercises(): List<ExerciseWithType.Strength>
 
     @Transaction
+    @Query("SELECT * FROM exercise_entity WHERE id IN (SELECT exercise_id FROM endurance_exercise_entity)")
+    suspend fun getAllEnduranceExercises(): List<ExerciseWithType.Endurance>
+
+    @Transaction
     @Query("SELECT * FROM exercise_entity WHERE id IN (SELECT exercise_id FROM strength_exercise_entity)")
     fun observeStrengthExercises(): Flow<List<ExerciseWithType.Strength>>
 
