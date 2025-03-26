@@ -11,8 +11,7 @@ sealed interface ExerciseTypeFormError {
     ) : ExerciseTypeFormError
 
     data class Endurance(
-        val duration: UiText? = null,
-        val distance: UiText? = null,
-        val average: UiText? = null,
+        val activityType: UiText? = null,
+        val durationUnit: UiText? = null,
     ) : ExerciseTypeFormError
 }

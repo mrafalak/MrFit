@@ -32,8 +32,7 @@ fun ExerciseTypeForm.Strength.toExerciseTypeStrength(): ExerciseType.Strength {
 
 fun ExerciseTypeForm.Endurance.toExerciseTypeEndurance(): ExerciseType.Endurance {
     return ExerciseType.Endurance(
-        duration = this.data.duration,
-        distance = this.data.distance,
-        averageSpeed = this.data.averageSpeed
+        activityType = this.data.activityType,
+        durationUnit = this.data.durationUnit,
     )
 }

@@ -1,35 +1,51 @@
 package com.mrapps.domain.units
 
 
-enum class MeasurementUnit(val id: Int, val unit: String) {
+sealed class MeasurementUnit(val id: Int, val unit: String) {
 
-    // Weight
-    KILOGRAM(1, "kg"),
-    POUND(2, "lb"),
+    sealed class Weight(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object Kilogram : Weight(1, "kg")
+        data object Pound : Weight(2, "lb")
+    }
 
-    // Distance
-    CENTIMETER(12, "cm"),
-    METER(10, "m"),
-    KILOMETER(11, "km"),
-    INCH(14, "in"),
-    FOOT(13, "ft"),
-    MILE(15, "mi"),
+    sealed class Distance(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object Centimeter : Distance(12, "cm")
+        data object Meter : Distance(10, "m")
+        data object Kilometer : Distance(11, "km")
+        data object Inch : Distance(14, "in")
+        data object Foot : Distance(13, "ft")
+        data object Mile : Distance(15, "mi")
+    }
 
-    // Time
-    MILLISECOND(20, "ms"),
-    SECOND(21, "s"),
-    MINUTE(22, "min"),
-    HOUR(23, "h"),
+    sealed class Time(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object Millisecond : Time(20, "ms")
+        data object Second : Time(21, "s")
+        data object Minute : Time(22, "min")
+        data object Hour : Time(23, "h")
 
-    // Speed
-    SPEED_KMH(30, "km/h"),
-    SPEED_MPH(31, "mi/h"),
+        companion object {
+            val entries: List<Time> by lazy {
+                listOf(Millisecond, Second, Minute, Hour)
+            }
 
-    // Countable
-    REPETITION(40, "reps"),
-    SET(41, "sets"),
-    STEP(42, "steps"),
+            fun fromId(id: Int?): Time? {
+                return entries.firstOrNull { it.id == id }
+            }
+        }
+    }
 
-    // Percentage
-    PERCENT(100, "%")
+    sealed class Speed(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object KmPerHour : Speed(30, "km/h")
+        data object MiPerHour : Speed(31, "mi/h")
+    }
+
+    sealed class Countable(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object Repetition : Countable(40, "reps")
+        data object Set : Countable(41, "sets")
+        data object Step : Countable(42, "steps")
+    }
+
+    sealed class Percentage(id: Int, unit: String) : MeasurementUnit(id, unit) {
+        data object Percent : Percentage(100, "%")
+    }
 }

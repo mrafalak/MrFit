@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.mrapps.data.local.dao.exercise.ExerciseDao
 import com.mrapps.data.local.dao.exercise.ExerciseExecutionDao
+import com.mrapps.data.local.dao.exercise.type.endurance.EnduranceExerciseDao
 import com.mrapps.data.local.dao.exercise.type.strength.StrengthExerciseDao
 import com.mrapps.data.local.dao.exercise.type.strength.StrengthSetDao
 import com.mrapps.data.local.dao.training.TrainingExerciseDao
@@ -45,6 +46,10 @@ object DatabaseModule {
     @Provides
     fun provideStrengthSetDao(appDatabase: AppDatabase): StrengthSetDao =
         appDatabase.strengthSetDao()
+
+    @Provides
+    fun provideEnduranceExerciseDao(appDatabase: AppDatabase): EnduranceExerciseDao =
+        appDatabase.enduranceExerciseDao()
 
     @Provides
     fun provideTrainingSessionDao(appDatabase: AppDatabase): TrainingSessionDao =

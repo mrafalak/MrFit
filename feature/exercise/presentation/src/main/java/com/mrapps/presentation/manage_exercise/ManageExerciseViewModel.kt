@@ -66,8 +66,9 @@ class ManageExerciseViewModel @Inject constructor(
 
     fun onAction(action: ManageExerciseAction) {
         when (action) {
-            is ManageExerciseAction.GetExerciseData -> getExerciseDataFromDatabase(action.exerciseId)
+            is ManageExerciseAction.GetInitialData -> getInitialDataFromDatabase(action.exerciseId)
             ManageExerciseAction.ValidateForm -> {
+                trimFormTextFields()
                 validateForm(
                     form = state.value.form,
                     edit = state.value.form.id != null
@@ -94,14 +95,22 @@ class ManageExerciseViewModel @Inject constructor(
         }
     }
 
-    private fun getExerciseDataFromDatabase(exerciseId: String) {
+    private fun getInitialDataFromDatabase(exerciseId: String) {
         viewModelScope.launch {
             getExerciseUseCase.invoke(exerciseId).fold(
                 onSuccess = { exercise ->
+                    val type = exercise.type.type
+                    val initialTypeForm = when (type) {
+                        ExerciseTypeEnum.STRENGTH -> ExerciseTypeForm.Strength()
+                        ExerciseTypeEnum.ENDURANCE -> ExerciseTypeForm.Endurance()
+                    }
+
                     val updatedForm = state.value.form.copy(
                         id = exercise.id,
                         name = exercise.name,
                         description = exercise.description ?: "",
+                        type = type,
+                        typeForm = initialTypeForm,
                     )
 
                     _state.value = state.value.copy(form = updatedForm)
@@ -121,6 +130,7 @@ class ManageExerciseViewModel @Inject constructor(
                 async {
                     val validateResult = formValidator.validateName(
                         name = form.name,
+                        editedExerciseId = form.id,
                         edit = edit
                     )
 
@@ -158,8 +168,8 @@ class ManageExerciseViewModel @Inject constructor(
         val exercise = Exercise(
             id = uuidString(),
             name = form.name,
-            type = form.typeForm.toExerciseType(),
-            description = form.description
+            description = form.description,
+            type = form.typeForm.toExerciseType()
         )
 
         viewModelScope.launch {
@@ -221,6 +231,12 @@ class ManageExerciseViewModel @Inject constructor(
         }
     }
 
+    private fun trimFormTextFields() {
+        val trimmedName = state.value.form.name.trim()
+        val trimmedDescription = state.value.form.description.trim()
+        updateForm(state.value.form.copy(name = trimmedName, description = trimmedDescription))
+    }
+
     private fun updateName(name: String) {
         updateForm(state.value.form.copy(name = name))
     }
@@ -230,7 +246,13 @@ class ManageExerciseViewModel @Inject constructor(
     }
 
     private fun updateType(type: ExerciseTypeEnum) {
-        updateForm(state.value.form.copy(type = type))
+        val updatedForm = state.value.form.copy(type = type)
+
+        _state.value = state.value.copy(
+            form = updatedForm,
+            isFormValidated = false,
+            isTypeFormValidated = false
+        )
     }
 
     private fun updateTypeForm(
