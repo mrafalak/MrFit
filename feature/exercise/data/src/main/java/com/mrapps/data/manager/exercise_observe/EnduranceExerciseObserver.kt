@@ -1,6 +1,6 @@
 package com.mrapps.data.manager.exercise_observe
 
-import com.mrapps.data.local.dao.exercise.ExerciseDao
+import com.mrapps.data.local.dao.exercise.type.endurance.EnduranceExerciseDao
 import com.mrapps.data.local.util.safeDatabaseFlowOperation
 import com.mrapps.data.mapper.toExercise
 import com.mrapps.domain.DataError
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class EnduranceExerciseObserver @Inject constructor(
-    private val exerciseDao: ExerciseDao,
+    private val enduranceExerciseDao: EnduranceExerciseDao,
     private val dispatchers: DispatcherProvider
 ) : ExerciseObserver {
 
@@ -20,7 +20,7 @@ class EnduranceExerciseObserver @Inject constructor(
         return safeDatabaseFlowOperation<List<Exercise>, EnduranceExerciseObserver>(
             dispatcher = dispatchers.io
         ) {
-            exerciseDao.observeEnduranceExercises().map { entityList ->
+            enduranceExerciseDao.observeEnduranceExercises().map { entityList ->
                 entityList.map { entity ->
                     entity.toExercise()
                 }

@@ -1,6 +1,6 @@
 package com.mrapps.data.manager.exercise_update
 
-import com.mrapps.data.local.dao.exercise.ExerciseDao
+import com.mrapps.data.local.dao.exercise.type.endurance.EnduranceExerciseDao
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
 import com.mrapps.data.local.entity.exercise.type.EnduranceExerciseEntity
 import com.mrapps.data.local.util.safeDatabaseOperation
@@ -13,7 +13,7 @@ import com.mrapps.domain.Result
 import javax.inject.Inject
 
 class EnduranceExerciseUpdater @Inject constructor(
-    private val exerciseDao: ExerciseDao
+    private val enduranceExerciseDao: EnduranceExerciseDao
 ) : ExerciseUpdater {
 
     override suspend fun update(
@@ -32,14 +32,14 @@ class EnduranceExerciseUpdater @Inject constructor(
 
         return if (saved.type == new.type.type) {
             safeDatabaseOperation<Unit, EnduranceExerciseUpdater> {
-                exerciseDao.updateExerciseWithEnduranceExercise(
+                enduranceExerciseDao.updateExerciseWithEnduranceExercise(
                     exercise = exerciseEntity,
                     enduranceExercise = enduranceEntity
                 )
             }
         } else {
             safeDatabaseOperation<Unit, EnduranceExerciseUpdater> {
-                exerciseDao.removeSavedExerciseAndAddNewEnduranceExercise(
+                enduranceExerciseDao.removeSavedExerciseAndAddNewEnduranceExercise(
                     exercise = exerciseEntity,
                     enduranceExercise = enduranceEntity
                 )

@@ -1,6 +1,6 @@
 package com.mrapps.data.manager.exercise_add
 
-import com.mrapps.data.local.dao.exercise.ExerciseDao
+import com.mrapps.data.local.dao.exercise.type.strength.StrengthExerciseDao
 import com.mrapps.data.local.entity.exercise.ExerciseEntity
 import com.mrapps.data.local.entity.exercise.type.StrengthExerciseEntity
 import com.mrapps.data.local.util.safeDatabaseOperation
@@ -12,7 +12,7 @@ import com.mrapps.domain.Result
 import javax.inject.Inject
 
 class StrengthExerciseAdder @Inject constructor(
-    private val exerciseDao: ExerciseDao
+    private val strengthExerciseDao: StrengthExerciseDao
 ) : ExerciseAdder {
 
     override suspend fun add(exercise: Exercise): Result<Unit, DataError.Local> {
@@ -27,7 +27,7 @@ class StrengthExerciseAdder @Inject constructor(
         }
 
         return safeDatabaseOperation<Unit, StrengthExerciseAdder> {
-            exerciseDao.insertExerciseWithStrengthExercise(
+            strengthExerciseDao.insertExerciseWithStrengthExercise(
                 exercise = exerciseEntity,
                 strengthExercise = strengthEntity
             )

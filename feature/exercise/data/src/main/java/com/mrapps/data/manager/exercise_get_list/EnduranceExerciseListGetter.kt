@@ -1,6 +1,6 @@
 package com.mrapps.data.manager.exercise_get_list
 
-import com.mrapps.data.local.dao.exercise.ExerciseDao
+import com.mrapps.data.local.dao.exercise.type.endurance.EnduranceExerciseDao
 import com.mrapps.data.local.relation.ExerciseWithType
 import com.mrapps.data.local.util.safeDatabaseOperation
 import com.mrapps.data.mapper.toExercise
@@ -10,13 +10,13 @@ import com.mrapps.domain.Result
 import javax.inject.Inject
 
 class EnduranceExerciseListGetter @Inject constructor(
-    private val exerciseDao: ExerciseDao
+    private val enduranceExerciseDao: EnduranceExerciseDao
 ) : ExerciseListGetter {
 
     override suspend fun getList(): Result<List<Exercise>, DataError.Local> {
         val result =
             safeDatabaseOperation<List<ExerciseWithType.Endurance>, EnduranceExerciseListGetter> {
-                exerciseDao.getAllEnduranceExercises()
+                enduranceExerciseDao.getAllEnduranceExercises()
             }
 
         return when (result) {
